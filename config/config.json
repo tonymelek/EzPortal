@@ -1,8 +1,15 @@
 {
   "development": {
-    "username": "admin",
-    "password": "admin",
-    "database": "employee_demo_db",
+    "username": "root",
+    "password": "christopher",
+    "database": "blogger",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
