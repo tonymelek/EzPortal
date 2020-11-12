@@ -8,7 +8,7 @@
 * [Tests](#tests)
 * [Questions](#questions)
 ## Description
-
+That's Project 2
 ## Installation
 
 ## Usage
@@ -24,6 +24,7 @@ Please, send any question to:
 2. Christopher
 3. Sunda
 4. Alan
+5. Daniel
 
 ## License
 The project is protected under MIT,you may need to read through license conditions
