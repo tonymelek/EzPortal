@@ -24,7 +24,7 @@ Please, send any question to:
 2. Christopher
 3. Sunda
 4. Alan
-5. Daniel
+5. Daniel Zhang
 
 ## License
 The project is protected under MIT,you may need to read through license conditions
