@@ -5,9 +5,14 @@ const router = express.Router()
 ///use router instead of app when creating the routes
 
 
-router.get("/", function (req, res) {
-    res.render("index",)
-});
+
+
+router.get('/', (req, res) => {
+    res.render('index', {
+        title: 'EzPortal | Login'
+    })
+})
+
 
 
 
