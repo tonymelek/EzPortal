@@ -1,0 +1,12 @@
+.bottom {
+    width: 100%;
+    margin-top: 20px;
+}
+.side {
+    max-height: 375px;
+    min-height: 375px;
+}
+#statsGraph {
+    margin-left:50px;
+}
+

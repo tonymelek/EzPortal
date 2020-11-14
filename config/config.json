@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "christopher",
-    "database": "blogger",
+    "database": "employee_demo_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
