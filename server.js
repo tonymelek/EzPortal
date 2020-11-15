@@ -5,7 +5,7 @@ const expbs = require('express-handlebars');
 const db = require('./models');
 
 const app = express(); // Start Express
-const PORT = process.env.PORT || 8080; // Set Port
+const PORT = process.env.PORT // Set Port
 
 // Identify the use of Handlebars
 app.engine('handlebars', expbs({ defaultLayout: 'main' }));

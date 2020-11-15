@@ -7,9 +7,9 @@ const bcrypter = {
                 result ? res(true) : res(false);
             });
         });
-    }
-// Promisify bcrypt.hash
-bcryptHash: function (plain) {
+    },
+    // Promisify bcrypt.hash
+    bcryptHash: function (plain) {
         return new Promise((res, rej) => {
             bcrypt.hash(plain, 10, (err, hash) => {
                 hash ? res(hash) : res(err);

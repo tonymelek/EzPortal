@@ -25,8 +25,8 @@ function userFn(sequelize, DataTypes) {
       allowNull: false,
       validate: {
         len: {
-          args: [11, 11],
-          msg: "The mobile number should be exactly 11 characters",
+          args: [10, 10],
+          msg: "The mobile number should be exactly 10 characters",
         },
       },
     },
@@ -45,17 +45,17 @@ function userFn(sequelize, DataTypes) {
       allowNull: false,
     },
   },
- );
+  );
 
   // Associate users to role
-  User.associate = function(models){
+  User.associate = function (models) {
     User.belongsTo(models.Role, {
       foreignKey: {
         allowNull: false,
       },
     });
     // Associate Employees to Tasks
-     User.hasMany(models.Task, {
+    User.hasMany(models.Task, {
       foreignKey: {
         name: "assigned_by",
         allowNull: false,
@@ -68,8 +68,8 @@ function userFn(sequelize, DataTypes) {
       },
     });
   };
- 
-  
+
+
   // Associate Employees to Time Sheets
   // User.associate = (models) => {
   //     User.hasMany(models.TSheet)
