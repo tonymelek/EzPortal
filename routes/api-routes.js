@@ -81,6 +81,7 @@ router.post('/login', async (req, res) => {
       if (result) {
         const token = await jwtSign(user, '30m');
         res.json(token);
+
       } else {
         res.status(403).json({ msg: 'Sorry, user not found' });
       }
