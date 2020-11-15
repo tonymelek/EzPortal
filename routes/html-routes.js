@@ -1,9 +1,4 @@
-const express = require('express')
-const router = express.Router()
-
-
-///use router instead of app when creating the routes
-
+const express = require('express');
 
 router.get('/', (req, res) => {
     res.render('index', {
@@ -16,13 +11,6 @@ router.get('/admin', (req, res) => {
     })
 }
 )
+const router = express.Router();
 
-
-
-
-
-
-
-
-
-module.exports = router
+module.exports = router;

@@ -1,4 +1,3 @@
-
 new Chart(document.getElementById("myChart"), {
     type: 'line',
     data: {
@@ -48,3 +47,4 @@ $.post({
     }
 }).then(res =>
     console.log(res)).catch(err => console.log(err))
+
