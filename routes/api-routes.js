@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable consistent-return */
 const express = require('express');
-
 const { bcryptComp, bcryptHash } = require('./../middleware/bcrypt')
 const { jwtSign, jwtVerify } = require('./../middleware/jwt')
 const db = require('../models');

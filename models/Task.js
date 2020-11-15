@@ -1,5 +1,5 @@
 const taskFn = (sequelize, DataTypes) => {
-  const Task = sequelize.define('Task', {
+  const Task = sequelize.define("Task", {
     completed: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -14,18 +14,19 @@ const taskFn = (sequelize, DataTypes) => {
   Task.associate = (models) => {
     Task.belongsTo(models.User, {
       foreignKey: {
-        name: 'assigned_by',
+        name: "assigned_by",
         allowNull: false,
       },
 
     });
     Task.belongsTo(models.User, {
       foreignKey: {
-        name: 'assigned_to',
+        name: "assigned_to",
         allowNull: false,
       },
     });
-Task.belongsTo(models.PreDef, {
+    // Associate task to pre_defined_tasks
+    Task.belongsTo(models.PreDef, {
       foreignKey: {
         allowNull: false,
       },
@@ -33,10 +34,8 @@ Task.belongsTo(models.PreDef, {
 
   };
 
-  // Associate task to pre_defined_tasks
-  Task.associate = (models) => {
-    
-  };
+
+
 
   return Task;
 };
