@@ -4,22 +4,12 @@ const express = require('express');
 const { bcryptComp, bcryptHash } = require('./../middleware/bcrypt')
 const { jwtSign, jwtVerify } = require('./../middleware/jwt')
 const db = require('../models');
+const axios = require('axios')
 const verifyToken = require('../middleware/verifyToken');
-
-
-
-
-
-
-
-
-// bcryptComp('1234679', '$2b$10$my5pe3OfdX18xW0Tr7hZXuF5R/2nIhbIZsJ3FsML11cKYfH.W/BsO').then((res) => console.log(res)).catch((err) => console.log(false));
-
 const router = express.Router();
-
 const secret = process.env.JWT_SECRET;
-/// use router instead of app when creating the routes
-// start the api routees without'/api/' , i.e. router.get('/user/') instead of app.get('/api/user')
+const PORT = process.env.PORT
+
 router.post('/createuser', verifyToken, async (req, res) => {
   const authData = await jwtVerify(req.token, secret);
   // console.log(authData);
@@ -100,6 +90,7 @@ router.post('/login', async (req, res) => {
     throw err
   }
 });
+
 
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const secret = process.env.JWT_SECRET
 const jwter = {
     // Promisify jwt.verify
     jwtVerify: function (token, secret) {
@@ -12,10 +12,10 @@ const jwter = {
                 }
             });
         });
-    }
+    },
 
-// Promisify jwt.sign
-jwtSign: function (user, expireTime) {
+    // Promisify jwt.sign
+    jwtSign: function (user, expireTime) {
         return new Promise((res, rej) => {
             jwt.sign({ user }, secret, { expiresIn: expireTime }, (err, token) => {
                 if (err) {
