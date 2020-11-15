@@ -1,0 +1,57 @@
+<div class="jumbotron">
+    <h1 class="text-center text-success">Welcome {{name}}</h1>
+</div>
+<div class="row justify-content-center">
+    <div class="card col-lg-5">
+        <div class="card-header">
+            <h3>{{name}} Tasks</h3>
+        </div>
+        <h4>Tasks to be completed</h4>
+        <ul>
+            {{#each tasks}}
+            {{#unless completed}}
+            {{> tasks/tasks-block completed=true}}
+            {{/unless}}
+            {{/each}}
+        </ul>
+        <h4>Tasks completed to be checked off</h4>
+        <ul>
+            {{#each tasks}}
+            {{#if completed}}
+            {{> tasks/tasks-block completed = false}}
+            {{/if}}
+            {{/each}}
+        </ul>
+        <h4>Tasks signed off on</h4>
+        <ul>
+            {{#each tasks}}
+            {{#unless signedOff}}
+            {{> tasks/tasks-block signedOff=true}}
+            {{/unless}}
+            {{/each}}
+        </ul>
+    </div>
+    <div class="col-lg-1">
+
+    </div>
+    <div class="card col-lg-5">
+        <div class="card-header">
+            <h3>Team Member Contacts</h3>
+            <ul>
+
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="card-header">
+        <h3>{{name}} Info</h3>
+    </div>
+    <ul>
+        <li>{{user.first_name}} + {{user.last_name}}</li>
+        <li>{{user.role}}</li>
+        <li>{{user.mobile}}</li>
+        <li>{{user.office_number}}</li>
+        <li>{{user.email_address}}</li>
+    </ul>
+</div>
+</div>
