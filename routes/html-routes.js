@@ -37,11 +37,9 @@ router.get('/', (req, res) => {
 
 //Home page Lander
 router.get('/lander/:token', async (req, res) => {
-    console.log('I came here');
     const authData = await jwtVerify(req.params.token, secret);
     switch (authData.user.Role.management_level) {
         case 100:
-            console.log(authData.user);
             res.status(200).render('admin', { title: "EzPortal | Admin", admin: authData.user });
             break;
         case 1:

@@ -50,15 +50,7 @@ $('#signin').click((e) => {
         }
     }).then(res => {
         console.log(res);
-        localStorage.setItem(`ezPortal${$('#email').val()}`, res.token);
+        localStorage.setItem(`ezPortal`, res.token);
         location.href = `/lander/${res.token}`
-        // $.get({ url: '/lander', headers: { 'Authorization': `Bearer ${res.token}` } }).then(
-        //     result => {
-        //         const newDoc = document.open("text/html", "replace");
-        //         newDoc.write(result);
-        //         newDoc.close();
-        //     }
-        // )
-
     })
 })
