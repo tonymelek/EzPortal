@@ -1,19 +1,111 @@
 <div class="jumbotron">
     <h1 class="text-center text-success">Welcome {{name}}</h1>
 </div>
-<div class="row justify-content-center">
-    <div class="card col-lg-5">
-        <div class="card-header">Tasks to sign off</div>
-        <ul>
-            {{#each tasks}}
-            {{#unless completed}}
-            {{> tasks/tasks-block completed=true}}
-            {{/unless}}
-            {{/each}}
-        </ul>
+
+<div class="row">
+    <div class="card col-lg-5" id="statsGraph">
+        <div class="card-header">
+            <h3>Department Statistics</h3>
+        </div>
+        <div class="card-body">
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
-    <div class="card col-lg-3">
-        <div class="card-header">Employee List</div>
-        {{List of employees populated and clickable to then bring up their information and tasks}}
+    <div class="col-md-2">
+        <div class="card employee side">
+
+            <div class="card-header">
+                <h3>Employees</h3>
+            </div>
+            <div class="card-body">
+                <ul>
+                </ul>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
     </div>
+    <div class="col-md-2">
+        <div class="card employee side">
+
+            <div class="card-header">
+                <h3>Employees</h3>
+            </div>
+            <div class="card-body">
+                <ul>
+                </ul>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card employee side">
+
+            <div class="card-header">
+                <h3>Employees</h3>
+            </div>
+            <div class="card-body">
+                <ul>
+                </ul>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" id="bottom">
+        <div class="card task">
+            <div class="card-header">
+                <h3>Task Creation and Assignment</h3>
+            </div>
+            <div class='card-body'>
+                <h4>Tasks</h4>
+                <ul>
+
+                </ul>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask">
+                    Add
+                </button>
+                <div class="modal fade" id="addTask" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Create Task</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="inputDepartmentName">Task</label>
+                                            <input type="text" class="form-control" id="inputDepartmentName"
+                                                placeholder="Update webpage">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="taskAssign">Assign to</label>
+                                            <select id="taskAssign" class="form-control">
+                                                <option selected>Choose...</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Create</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>

@@ -53,6 +53,11 @@ router.get('/admin', (req, res) => {
     res.render('admin')
 })
 
+router.get('/manager', (req, res) => {
+    res.render('manager')
+})
+
+
 
 
 module.exports = router;
