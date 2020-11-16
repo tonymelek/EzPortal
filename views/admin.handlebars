@@ -1,281 +1,89 @@
-<div class="jumbotron">
-    <h1 class="text-center text-success">Welcome {{admin.first_name}} </h1>
-</div>
 
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <a class="navbar-brand" href="">
+        <h2>Welcome {{admin.first_name}}</h2>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="">Main</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Departments</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="">Roles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Employees</a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
 <div class="row">
-    <div class="card col-lg-5" id="statsGraph">
-        <div class="card-header">
-            <h3>Company Statistics</h3>
-        </div>
-        <div class="card-body">
-            <canvas id="myChart"></canvas>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card employee side">
+    <div class="col-md-4">
+        <div class="card department">
 
             <div class="card-header">
-                <h3 class="text-center">Employees</h3>
+
+                <h3>Departments</h3>
+
             </div>
 
             <div class="card-body">
                 <ul>
-                    {{#each users}}
-
-                    <li>{{this.dataValues.first_name}} {{this.dataValues.last_name}}</li>
-
+                    {{#each department}}
+                    {{department.name}}
                     {{/each}}
 
                 </ul>
             </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEmployee">
-                    Add
-                </button>
-                <div class="modal fade" id="addEmployee" data-backdrop="static" data-keyboard="false" tabindex="-1"
-                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Add Employee</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="first_name">First Name</label>
-                                            <input type="text" class="form-control" id="inputFirstName"
-                                                placeholder="First Name">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="last_name">Last Name</label>
-                                            <input type="text" class="form-control" id="inputLastName"
-                                                placeholder="Doe">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Email Address</label>
-                                        <input type="email" class="form-control" id="inputEmail"
-                                            placeholder="123@fake.com">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mobile">Mobile Number</label>
-                                        <input type="tel" class="form-control" id="inputMobile"
-                                            placeholder="12 1234 1234">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="starting_date">Starting Date</label>
-                                        <input type="datetime-local" class="form-control" id="inputStartingDate"
-                                            placeholder="">
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="office_number">Office Number</label>
-                                            <input type="text" class="form-control" id="inputOfficeNumber">
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="role">Role</label>
-                                            <select id="inputRole" class="form-control">
-                                                <option selected>Choose...</option>
-                                                <option>...</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Create Employee</button>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-    <div class="col-md-2">
-        <div class="card role side">
+    <div class="col-md-4">
+        <div class="card role">
             <div class="card-header">
-                <h3 class="text-center">Roles</h3>
+
+                <h3>Roles</h3>
             </div>
             <div class="card-body">
                 <ul>
-                    {{#each roles}}
-
-                    <li>{{this.dataValues.title}}</li>
-
+                    {{#each role}}
+                    {{role.title}}
                     {{/each}}
 
                 </ul>
             </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRole">
-                    Add
-                </button>
-                <div class="modal fade" id="addRole" data-backdrop="static" data-keyboard="false" tabindex="-1"
-                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Create New Role</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="inputTitle">Title</label>
-                                            <input type="text" class="form-control" id="inputTitle"
-                                                placeholder="Software Developer">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="inputRate">Hourly Rate</label>
-                                            <input type="number" class="form-control" id="inputRate" step="0.25"
-                                                value="25.00" placeholder="25.00">
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="inputDepartment">Department</label>
-                                            <select id="inputDepartment" class="form-control">
-                                                <option selected>Choose...</option>
-                                                <option>...</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="inputManagement">Manager Level</label>
-                                            <select id="inputManagement" class="form-control">
-                                                <option selected>Choose...</option>
-                                                <option>...</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Create</button>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-    <div class="col-md-2">
-        <div class="card department side">
+    <div class="col-md-4">
+        <div class="card employee">
             <div class="card-header">
-                <h3 class="text-center">Departments</h3>
+
+                <h3>Employees</h3>
+
             </div>
             <div class="card-body">
 
                 <ul>
-                    {{#each depts}}
 
-                    <li>{{this.dataValues.name}}</li>
-
+                    {{#each employee}}
+                    {{employee.first_name}} {{employee.last_name}}
                     {{/each}}
-
                 </ul>
             </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addDepartment">
-                    Add
-                </button>
-                <div class="modal fade" id="addDepartment" data-backdrop="static" data-keyboard="false" tabindex="-1"
-                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Create New Department</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="post">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <label for="inputDepartmentName">Name</label>
-                                            <input type="text" class="form-control" id="inputDepartmentName"
-                                                placeholder="Department">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary" id="new-dept">Create</button>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card tast bottom">
-            <div class="card-header">
-                <h3>Manager Task Creation and Assignment</h3>
-            </div>
-            <div class='card-body'>
-                <h4>Tasks</h4>
-                <ul>
 
-                </ul>
-            </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask">
-                    Add
-                </button>
-                <div class="modal fade" id="addTask" data-backdrop="static" data-keyboard="false" tabindex="-1"
-                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Create Task</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <label for="inputDepartmentName">Task</label>
-                                            <input type="text" class="form-control" id="inputDepartmentName"
-                                                placeholder="Update webpage">
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label for="taskAssign">Assign to</label>
-                                            <select id="taskAssign" class="form-control">
-                                                <option selected>Choose...</option>
-                                                <option>...</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Create</button>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
+<footer class="footer"></footer>
 
 <script>
     localStorage.setItem("ezPortal", '{{ token.token }}')

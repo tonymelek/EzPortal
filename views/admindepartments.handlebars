@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <a class="navbar-brand" href="">
+        <h2>Welcome {{admin.first_name}}</h2>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="">Main</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Departments</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="">Roles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Employees</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="row">
+    <div class="card col-3">
+        <div class="card-header depart">
+            <h2>Departments</h2>
+        </div>
+        <div class="card-body">
+            <ul></ul>
+        </div>
+    </div>
+    <div class="card col-7 departman">
+        <div class="card-header">
+            <h2>Department Manager</h2>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="inputDepartmentName">Name</label>
+                        <input type="text" class="form-control" id="inputDepartmentName" placeholder="Human Resources">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    localStorage.setItem("ezPortal", '{{ token.token }}')
+</script>

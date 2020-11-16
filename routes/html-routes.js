@@ -55,6 +55,11 @@ router.get('/counter', (req, res) => {
     });
 })
 
+router.get('/manager', (req, res) => {
+    res.render('manager')
+})
+
+
 
 
 
