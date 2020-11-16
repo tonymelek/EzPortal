@@ -1,14 +1,34 @@
-#bottom {
+bottom {
     width: 100%;
     margin-top: 20px;
     min-height: 200px;
     max-height: 200px;
 }
-.side {
+.department {
     max-height: 375px;
     min-height: 375px;
+    margin: 20px 10px 20px 20px;
 }
-#statsGraph {
-    margin-left:50px;
+.role {
+    max-height: 375px;
+    min-height: 375px;
+    margin: 20px 10px 10px 10px;
 }
-
+.employee {
+    max-height: 375px;
+    min-height: 375px;
+    margin: 20px 20px 20px 10px;
+}
+footer {
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+    background-color:#333333;
+}
+.depart {
+    margin: 20px 10px 20px 20px;
+}
+.departman {
+    margin: 20px 20px 20px 10px;
+}
