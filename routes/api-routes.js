@@ -45,7 +45,7 @@ router.post('/create-first-role', async (req, res) => {
       title: req.body.title,
       hourly_rate: req.body.wage,
       management_level: req.body.level,
-      DeptId: req.body.deptid,
+      DeptId: req.body.deptid
 
     }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to create new role', err: err.message }));
   }
@@ -65,7 +65,7 @@ router.post('/createrole', verifyToken, async (req, res) => {
         title: req.body.title,
         hourly_rate: req.body.wage,
         management_level: req.body.level,
-        DeptId: req.body.deptid,
+        DeptId: req.body.deptid
       }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to create new role', err: err.message }));
     }
     else {
@@ -89,7 +89,7 @@ router.post('/create-admin', async (req, res) => {
       office_number: req.body.off,
       email: req.body.email,
       password: hash,
-      RoleId: req.body.rolid,
+      RoleId: req.body.rolid
     });
     res.status(200).json(newUser);
   } else {
@@ -110,7 +110,7 @@ router.post('/createuser', verifyToken, async (req, res) => {
       office_number: req.body.off,
       email: req.body.email,
       password: hash,
-      RoleId: req.body.rolid,
+      RoleId: req.body.rolid
     })
     res.status(200).json(data);
   } else {
@@ -118,7 +118,26 @@ router.post('/createuser', verifyToken, async (req, res) => {
   }
 });
 
-//Create new tasks
+//Create new pre-defined tasks
+router.post('/createtask', verifyToken, async (req, res) => {
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    //Only IT Admin and Managers Can Create New Tasks
+    if (authData.user.Role.management_level > 2) {
+      db.PreDef.create({
+        title: req.body.title,
+        body: req.body.body
+      }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to create new task', err: err.message }));
+    }
+    else {
+      res.status(403).json({ msg: "Sorry, you can't create a new task, contact your admin" })
+    }
+  }
+  catch (err) {
+    throw err;
+  }
+});
+
 
 //Get all departments
 
@@ -159,7 +178,7 @@ router.put('/updaterole', verifyToken, async (req, res) => {
         title: req.body.title,
         hourly_rate: req.body.wage,
         management_level: req.body.level,
-        DeptId: req.body.deptid,
+        DeptId: req.body.deptid
       },
         {
           where: {
@@ -189,7 +208,7 @@ router.put('/updateuser', verifyToken, async (req, res) => {
       office_number: req.body.off,
       email: req.body.email,
       password: hash,
-      RoleId: req.body.rolid,
+      RoleId: req.body.rolid
     },
       {
         where: {
@@ -250,7 +269,10 @@ router.delete('/deleteuser/:id', verifyToken, async (req, res) => {
   }
 });
 
-//Login and Rendering
+//Delete tasks
+
+//Generate Token
+
 router.post('/login', async (req, res) => {
   try {
     const user = await db.User.findOne({
