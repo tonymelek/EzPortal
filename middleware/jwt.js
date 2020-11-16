@@ -25,6 +25,11 @@ const jwter = {
                 }
             })
         })
+    },
+    jwtRefresh: function (token, expireTime) {
+        const decoded = jwt.decode(token);
+        return jwt.sign({ user: decoded.user }, secret, { expiresIn: expireTime })
+
     }
 }
 module.exports = jwter

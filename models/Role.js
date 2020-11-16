@@ -1,4 +1,4 @@
-function roleFn (sequelize, DataTypes) {
+function roleFn(sequelize, DataTypes) {
   const Role = sequelize.define('Role', {
     title: {
       type: DataTypes.STRING,
@@ -33,7 +33,7 @@ function roleFn (sequelize, DataTypes) {
           msg: 'Least Managemnt Level is Junior Employee which is assigned Level 1',
         },
         max: {
-          args: [100],
+          args: [102],
           msg: 'The highest managemnt Level is 100 which is granted for IT admin only to create new users',
         },
       },
@@ -42,16 +42,16 @@ function roleFn (sequelize, DataTypes) {
   );
 
   // Associate Roles to Department
-  Role.associate = function(models) {
+  Role.associate = function (models) {
     Role.belongsTo(models.Dept, {
       foreignKey: {
         allowNull: false,
       },
     });
-    Role.hasMany(models.User,{ onDelete: 'cascade'});
+    Role.hasMany(models.User, { onDelete: 'cascade' });
   };
   // Associate Employees to Role
- 
+
   return Role;
 };
 
