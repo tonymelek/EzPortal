@@ -5,11 +5,19 @@ const db = require('../models');
 const router = express.Router();
 const secret = process.env.JWT_SECRET
 
+//Landing Page
 router.get('/', (req, res) => {
     res.render('index', {
         title: 'EzPortal | Login'
     })
 })
+
+//Admin Departments
+router.get('/admin-dept', async (req, res) => {
+    const depts = await db.Dept.findAll()
+    res.render('admindepartments', { title: "EzPortal | Admin | Departments", depts })
+})
+
 //Check Token
 const checkToken = async (token) => {
     let authData;
@@ -27,23 +35,11 @@ const checkToken = async (token) => {
 }
 
 
-//Home page Lander
-router.get('/lander/:token', async (req, res) => {
-    const [newToken, authData] = await checkToken(req.params.token)
-    switch (authData.user.Role.management_level) {
-        case 100:
-            const roles = await db.Role.findAll()
-            const depts = await db.Dept.findAll()
-            const users = await db.User.findAll()
-            // console.log(roles[0].dataValues);
-            res.status(200).render('admin', { title: "EzPortal | Admin", admin: authData.user, roles, depts, users });
-            break;
-        case 1:
 
-        default:
-            break;
-    }
-})
+
+
+
+//Dummy Activity
 router.get('/counter', (req, res) => {
     // Sample Query to get roles count for each department
     db.Role.findAll({
@@ -54,6 +50,11 @@ router.get('/counter', (req, res) => {
         res.json(tags)
     });
 })
+
+router.get('/manager', (req, res) => {
+    res.render('manager')
+})
+
 
 
 

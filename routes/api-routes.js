@@ -272,6 +272,7 @@ router.delete('/deleteuser/:id', verifyToken, async (req, res) => {
 //Delete tasks
 
 //Generate Token
+
 router.post('/login', async (req, res) => {
   try {
     const user = await db.User.findOne({
@@ -285,16 +286,19 @@ router.post('/login', async (req, res) => {
       const result = await bcryptComp(req.body.password, user.dataValues.password)
       if (result) {
         const token = await jwtSign(user, '15m');
+        const roles = await db.Role.findAll()
+        const depts = await db.Dept.findAll()
+        const users = await db.User.findAll()
         switch (user.dataValues.Role.management_level) {
           case 100:
-            const roles = await db.Role.findAll()
-            const depts = await db.Dept.findAll()
-            const users = await db.User.findAll()
             // console.log(roles[0].dataValues);
             res.status(200).render('admin', { title: "EzPortal | Admin", admin: user.dataValues, roles, depts, users, token });
             break;
           case 1:
-
+            res.status(200).render('employee', { title: "EzPortal | Employee", employee: user.dataValues, roles, depts, users, token });
+            break;
+          case 2:
+            res.status(200).render('manager', { title: "EzPortal | Manager", employee: user.dataValues, roles, depts, users, token });
           default:
             break;
         }
