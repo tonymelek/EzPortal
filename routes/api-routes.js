@@ -26,7 +26,7 @@ router.post('/createdept', verifyToken, async (req, res) => {
   try {
     const authData = await jwtVerify(req.token, secret);
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Create New Departments
-      db.Dept.create({ name: req.body.name }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to create new role', err: err.message }));
+      db.Dept.create({ name: req.body.name }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to create new department', err: err.message }));
     }
     else {
       res.status(403).json({ msg: "Sorry, you can't create a new department, contact your admin" })
@@ -55,11 +55,11 @@ router.post('/create-first-role', async (req, res) => {
 });
 
 //Create Role
-router.post('/createdept', verifyToken, async (req, res) => {
+router.post('/createrole', verifyToken, async (req, res) => {
   try {
     console.log(req.token, req.body);
     const authData = await jwtVerify(req.token, secret);
-    //Only IT Admin Can Create New Departments and managers of same department
+    //Only IT Admin Can Create New Roles and managers of same department
     if ((authData.user.Role.management_level === 100) || (authData.user.Role.management_level > req.body.level && authData.user.Role.DeptId == req.body.deptid)) {
       db.Role.create({
         title: req.body.title,
@@ -133,18 +133,122 @@ router.post('/createuser', verifyToken, async (req, res) => {
 //Get task
 
 //Update department
+router.put('/updatedept', verifyToken, async (req, res) => {
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    if (authData.user.Role.management_level === 100) { //Only IT Admin Can Update Departments
+      db.Dept.update({ name: req.body.name }, { where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to update a department', err: err.message }));
+    }
+    else {
+      res.status(403).json({ msg: "Sorry, you can't update a department, contact your admin" })
+    }
+  }
+  catch (err) {
+    throw err
+  }
+});
 
 //Update role
+router.put('/updaterole', verifyToken, async (req, res) => {
+  try {
+    //console.log(req.token, req.body);
+    const authData = await jwtVerify(req.token, secret);
+    //Only IT Admin Can Update Roles and managers of same department
+    if ((authData.user.Role.management_level === 100) || (authData.user.Role.management_level > req.body.level && authData.user.Role.DeptId == req.body.deptid)) {
+      db.Role.update({
+        title: req.body.title,
+        hourly_rate: req.body.wage,
+        management_level: req.body.level,
+        DeptId: req.body.deptid,
+      },
+        {
+          where: {
+            id: req.body.id
+          }
+        }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to update role', err: err.message }));
+    }
+    else {
+      res.status(403).json({ msg: "Sorry, you can't update a role, contact your admin" })
+    }
+  }
+  catch (err) {
+    throw err;
+  }
+});
 
 //update employee
+router.put('/updateuser', verifyToken, async (req, res) => {
+  const authData = await jwtVerify(req.token, secret);
+  // Give the user a default password of 123456789 and hash it before adding into the database
+  if (authData.user.Role.management_level === 100) {
+    const hash = await bcryptHash('123456789')
+    const data = await db.User.update({
+      first_name: req.body.f_name,
+      last_name: req.body.l_name,
+      mobile: req.body.mob,
+      office_number: req.body.off,
+      email: req.body.email,
+      password: hash,
+      RoleId: req.body.rolid,
+    },
+      {
+        where: {
+          id: req.body.id
+        }
+      })
+    res.status(200).json(data);
+  } else {
+    res.status(403).json({ msg: 'Sorry you are not allowed to update users' });
+  }
+});
 
 //Delete department
+router.delete('/deletedept/:id', verifyToken, async (req, res) => {
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Departments
+      db.Dept.destroy({ where: { id: req.params.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete department', err: err.message }));
+    }
+    else {
+      res.status(403).json({ msg: "Sorry, you can't delete a department, contact your admin" })
+    }
+  }
+  catch (err) {
+    throw err
+  }
+});
 
 //Delete role
+router.delete('/deleterole/:id', verifyToken, async (req, res) => {
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Roles
+      db.Role.destroy({ where: { id: req.params.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete role', err: err.message }));
+    }
+    else {
+      res.status(403).json({ msg: "Sorry, you can't delete a role, contact your admin" })
+    }
+  }
+  catch (err) {
+    throw err
+  }
+});
 
 //Delete employee
-
-
+router.delete('/deleteuser/:id', verifyToken, async (req, res) => {
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Users
+      db.User.destroy({ where: { id: req.params.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete user', err: err.message }));
+    }
+    else {
+      res.status(403).json({ msg: "Sorry, you can't delete a user, contact your admin" })
+    }
+  }
+  catch (err) {
+    throw err
+  }
+});
 
 //Login and Rendering
 router.post('/login', async (req, res) => {
