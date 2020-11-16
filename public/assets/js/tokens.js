@@ -44,36 +44,35 @@ function refreshToken() {
 }
 
 
-// // $(document).on("click", '#signin', (e) => {
-// //     e.preventDefault();
-// //     console.log('hfjdshfkjds');
-// //     $.post({
-// //         url: '/api/login',
-// //         data: {
-// //             "email": $('#email').val().trim(),
-// //             "password": $('#password').val().trim()
-// //         }
-// //     }).then(res => {
-// //         console.log(res);
-// //         // localStorage.setItem(`ezPortal`, res.token);
-// //         // location.href = `/lander/${localStorage.getItem('ezPortal')}`
-// //     })
+$(document).on("click", '#signin', (e) => {
+    e.preventDefault();
+    $.post({
+        url: '/api/login',
+        data: {
+            "email": $('#email').val().trim(),
+            "password": $('#password').val().trim()
+        }
+    }).then(res => {
+        console.log(res);
+        localStorage.setItem(`ezPortal`, res.token);
+        location.href = `/lander/${localStorage.getItem('ezPortal')}`
+    })
 
-// // setInterval(refreshToken, 840000)
-// // })
+    setInterval(refreshToken, 840000)
+})
 
-// $('#x').submit((e) => {
-//     e.preventDefault();
-//     e.stopPropagation();
-//     console.log('I came here');
-//     // $.post({
-//     //     url: '/api/createdept',
-//     //     data: {
-//     //         "name": $('#new-entry').val()
-//     //     },
-//     //     headers: {
-//     //         'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
-//     //     }
-//     // })
-//     // location.href = `/lander/${localStorage.getItem('ezPortal')}`
-// });
+$('#x').submit((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('I came here');
+    // $.post({
+    //     url: '/api/createdept',
+    //     data: {
+    //         "name": $('#new-entry').val()
+    //     },
+    //     headers: {
+    //         'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+    //     }
+    // })
+    // location.href = `/lander/${localStorage.getItem('ezPortal')}`
+});
