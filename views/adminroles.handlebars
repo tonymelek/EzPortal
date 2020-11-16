@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <a class="navbar-brand" href="">
+        <h2>Welcome {{admin.first_name}}</h2>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="">Main</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Departments</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="">Roles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Employees</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="row">
+    <div class="card col-4">
+        <div class="card-header">
+            <h2>Roles</h2>
+        </div>
+        <ul>
+            {{#each role}}
+            {{role role-block}}
+            {{/each}}
+        </ul>
+    </div>
+    <div class="card col-8">
+        <div class="card-header">
+            <h2>Role Manager</h2>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputTitle">Title</label>
+                        <input type="text" class="form-control" id="inputTitle" placeholder="Software Developer">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputRate">Hourly Rate</label>
+                        <input type="number" class="form-control" id="inputRate" step="0.25" value="25.00"
+                            placeholder="25.00">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputDepartment">Department</label>
+                        <select id="inputDepartment" class="form-control">
+                            <option selected>Choose...</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputManagement">Manager Level</label>
+                        <select id="inputManagement" class="form-control">
+                            <option selected>Choose...</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    localStorage.setItem("ezPortal", '{{ token.token }}')
+</script>
