@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <a class="navbar-brand" href="">
         <h2>Welcome {{admin.first_name}}</h2>
@@ -21,6 +22,7 @@
                 <a class="nav-link" href="">Employees</a>
             </li>
         </ul>
+
     </div>
 </nav>
 <div class="row">
@@ -28,7 +30,9 @@
         <div class="card department">
 
             <div class="card-header">
+
                 <h3>Departments</h3>
+
             </div>
 
             <div class="card-body">
@@ -36,6 +40,7 @@
                     {{#each department}}
                     {{department.name}}
                     {{/each}}
+
                 </ul>
             </div>
         </div>
@@ -44,6 +49,7 @@
     <div class="col-md-4">
         <div class="card role">
             <div class="card-header">
+
                 <h3>Roles</h3>
             </div>
             <div class="card-body">
@@ -51,6 +57,7 @@
                     {{#each role}}
                     {{role.title}}
                     {{/each}}
+
                 </ul>
             </div>
         </div>
@@ -58,20 +65,26 @@
     <div class="col-md-4">
         <div class="card employee">
             <div class="card-header">
+
                 <h3>Employees</h3>
+
             </div>
             <div class="card-body">
+
                 <ul>
+
                     {{#each employee}}
                     {{employee.first_name}} {{employee.last_name}}
                     {{/each}}
                 </ul>
             </div>
+
         </div>
     </div>
 </div>
 
 <footer class="footer"></footer>
+
 <script>
     localStorage.setItem("ezPortal", '{{ token.token }}')
 </script>
