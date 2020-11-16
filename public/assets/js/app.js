@@ -37,7 +37,11 @@
 //         }
 //     }
 // });
-
+function refreshToken() {
+    $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
+        localStorage.setItem(`ezPortal`, res.token);
+    })
+}
 
 
 $('#signin').click((e) => {
@@ -51,6 +55,9 @@ $('#signin').click((e) => {
     }).then(res => {
         console.log(res);
         localStorage.setItem(`ezPortal`, res.token);
-        location.href = `/lander/${res.token}`
+        location.href = `/lander/${localStorage.getItem('ezPortal')}`
     })
+
+    setInterval(refreshToken, 840000)
 })
+
