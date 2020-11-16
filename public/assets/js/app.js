@@ -25,6 +25,7 @@ function refreshToken() {
 }
 
 
+<<<<<<< Updated upstream
 
 // // $(document).on("click", '#signin', (e) => {
 // //     e.preventDefault();
@@ -40,9 +41,14 @@ function refreshToken() {
 // //         // localStorage.setItem(`ezPortal`, res.token);
 // //         // location.href = `/lander/${localStorage.getItem('ezPortal')}`
 // //     })
+=======
+$(document).on("click", '#signin', () => {
+    setInterval(refreshToken, 840000)
 
-// // setInterval(refreshToken, 840000)
-// // })
+})
+
+>>>>>>> Stashed changes
+
 
 // $('#x').submit((e) => {
 //     e.preventDefault();
