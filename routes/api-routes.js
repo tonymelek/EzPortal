@@ -118,6 +118,32 @@ router.post('/createuser', verifyToken, async (req, res) => {
   }
 });
 
+//Create new tasks
+
+//Get all departments
+
+//Get all roles
+
+//Get all employee
+
+//Get employee
+
+//Get all tasks
+
+//Get task
+
+//Update department
+
+//Update role
+
+//update employee
+
+//Delete department
+
+//Delete role
+
+//Delete employee
+
 
 
 //Generate Token
