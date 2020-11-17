@@ -1,95 +1,190 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <a class="navbar-brand" href="">
-        <h2>Welcome {{admin.first_name}}</h2>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ml-auto">
+    <div class="container">
+        <a class="navbar-brand" href="">
+            <h2> Admin | {{admin.first_name}}</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
 
-            <li class="nav-item">
-                <a class="nav-link" href="/admin-dept/{{token.token}}">Departments</a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link" href="/admin-role/{{token.token}}">Roles</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Employees</a>
-            </li>
-        </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-dept/{{token.token}}">Departments</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/admin-role/{{token.token}}">Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Employees</a>
+                </li>
+            </ul>
 
+        </div>
     </div>
 </nav>
 <div class="container my-4">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6 col-12">
             <div class="card department">
 
                 <div class="card-header">
 
-                    <h3>Departments</h3>
+                    <h3 class="text-center">Departments</h3>
 
                 </div>
 
-                <div class="card-body">
-                    <ul>
-                        {{#each depts}}
-                        <li> {{this.dataValues.name}}
-                            {{/each}}
+                <div class="card-body d-flex flex-column justify-content-between">
 
-                    </ul>
+                    <h5 class="text-center">Roles per Department</h5>
+                    {{#each dHome}}
+                    <div class=" d-flex dept" data-name='{{this.dataValues.DeptName}}'
+                        data-title={{this.dataValues.titles}}>
+                        {{!-- {{this.dataValues.DeptName}} {{this.dataValues.titles}} --}}
+                    </div>
+                    {{/each}}
+                    <div id="chartContainer1" style="height: 200px; width: 100%;"></div>
+
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6 col-12">
             <div class="card role">
                 <div class="card-header">
 
-                    <h3>Roles</h3>
+                    <h3 class="text-center">Roles</h3>
                 </div>
-                <div class="card-body">
-                    <ul>
-                        {{#each roles}}
-                        {{this.dataValues.title}}
-                        {{/each}}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="text-center">Employees per Role</h5>
+                    {{#each dRole}}
+                    <div class=" d-flex roler" data-name='{{dataValues.roleT}}' data-title={{dataValues.employees}}>
 
-                    </ul>
+                    </div>
+                    {{/each}}
+                    <div id="chartContainer2" style="height: 200px; width: 100%;"></div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6 col-12">
             <div class="card employee">
                 <div class="card-header">
 
-                    <h3>Employees</h3>
+                    <h3 class="text-center">Employees</h3>
 
                 </div>
-                <div class="card-body">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="text-center">Employees per Seniority Level</h5>
+                    {{#each userSum}}
+                    <div class=" d-flex user" data-name='{{level}}' data-title='{{num}}'>
 
-                    <ul>
-
-                        {{#each employee}}
-                        {{employee.first_name}} {{employee.last_name}}
-                        {{/each}}
-                    </ul>
+                    </div>
+                    {{/each}}
+                    <div id="chartContainer3" style="height: 200px; width: 100%;"></div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
+
 {{> footer}}
 
 <script>
-    localStorage.setItem("ezPortal", '{{ token.token }}')
-    function refreshToken() {
+    localStorage.setItem("ezPortal", ' {{ token.token }}') function refreshToken() {
         $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
             localStorage.setItem(`ezPortal`, res.token);
         })
     }
 
     setInterval(refreshToken, 840000)
+</script>
+<script>
+    window.onload = function () {
+        const depts = document.querySelectorAll('.dept');
+        const roles = document.querySelectorAll('.roler');
+        const users = document.querySelectorAll('.user');
+        const datapoints = []
+        const datapoints2 = []
+        const datapoints3 = []
+        let i = 0;
+        for (item of depts) {
+            i += 10
+            datapoints.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
+        }
+        i = 0
+        for (item of roles) {
+            i += 10
+            datapoints2.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
+        }
+        i = 0
+        for (item of users) {
+            i += 10
+            datapoints3.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
+        }
+
+        var chart1 = new CanvasJS.Chart("chartContainer1", {
+            animationEnabled: true,
+            exportEnabled: true,
+            theme: "light1", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: ""
+            },
+            axisY: {
+                includeZero: true
+            },
+            data: [{
+                type: "column", //change type to bar, line, area, pie, etc
+                //indexLabel: "{y}", //Shows y value on all Data Points
+                indexLabelFontColor: "#5A5757",
+                indexLabelFontSize: 16,
+                indexLabelPlacement: "outside",
+                dataPoints: datapoints
+            }]
+        });
+        chart1.render();
+
+        var chart2 = new CanvasJS.Chart("chartContainer2", {
+            animationEnabled: true,
+            exportEnabled: true,
+            theme: "light1", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: ""
+            },
+            axisY: {
+                includeZero: true
+            },
+            data: [{
+                type: "column", //change type to bar, line, area, pie, etc
+                //indexLabel: "{y}", //Shows y value on all Data Points
+                indexLabelFontColor: "#5A5757",
+                indexLabelFontSize: 16,
+                indexLabelPlacement: "outside",
+                dataPoints: datapoints2
+            }]
+        });
+        chart2.render();
+
+        var chart3 = new CanvasJS.Chart("chartContainer3", {
+            animationEnabled: true,
+            exportEnabled: true,
+            theme: "light1", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: ""
+            },
+            axisY: {
+                includeZero: true
+            },
+            data: [{
+                type: "column", //change type to bar, line, area, pie, etc
+                //indexLabel: "{y}", //Shows y value on all Data Points
+                indexLabelFontColor: "#5A5757",
+                indexLabelFontSize: 16,
+                indexLabelPlacement: "outside",
+                dataPoints: datapoints3
+            }]
+        });
+        chart3.render();
+
+    }
 </script>

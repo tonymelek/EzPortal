@@ -13,12 +13,48 @@ router.get('/', (req, res) => {
 })
 //Admin-Home
 router.get('/admin-home/:token', async (req, res) => {
-    const roles = await db.Role.findAll()
-    const depts = await db.Dept.findAll()
-    const users = await db.User.findAll()
+    const dHome = await db.Role.findAll({
+        include: [{ model: db.Dept, attributes: ['name'] }],
+        group: ['DeptId'],
+        attributes: ['DeptId', [db.sequelize.fn('COUNT', 'title'), 'titles']]
+    });
+    for (item of dHome) {
+        item.dataValues.DeptName = item.dataValues.Dept.name
+    }
+    const dRole = await db.User.findAll({
+        include: [{ model: db.Role, attributes: ['title'] }],
+        group: ['RoleId'],
+        attributes: ['RoleId', [db.sequelize.fn('COUNT', 'first_name'), 'employees']],
+    })
+    for (item of dRole) {
+        item.dataValues.roleT = item.dataValues.Role.title
+    }
+    const dUser = await db.User.findAll({
+        include: [{ model: db.Role, attributes: ['title', 'management_level'] }],
+        group: ['management_level'],
+        attributes: [[db.sequelize.fn('COUNT', 'first_name'), 'employees']],
+    })
+    const userSum = []
+    console.log(dUser.dataValues)
+    for (item of dUser) {
+        switch (item.dataValues.Role.management_level) {
+            case 100:
+                userSum.push({ level: 'Admin', num: item.dataValues.employees })
+                break;
+            case 2:
+                userSum.push({ level: 'Senior', num: item.dataValues.employees })
+                break;
+            case 1:
+                userSum.push({ level: 'Junior', num: item.dataValues.employees })
+                break;
+            default:
+                break;
+        }
+    }
+
     const [xtoken, authData] = await checkToken(req.params.token)
     const token = { token: xtoken }
-    res.render('admin', { title: "EzPortal | Admin | Departments", admin: authData.user, depts, roles, users, token })
+    res.render('admin', { title: "EzPortal | Admin | Departments", admin: authData.user, dHome, dRole, userSum, token })
 })
 //Admin Departments
 router.get('/admin-dept/:token', async (req, res) => {
@@ -62,6 +98,28 @@ router.get('/counter', (req, res) => {
         include: [{ model: db.Dept, attributes: ['name'] }],
         group: ['DeptId'],
         attributes: ['DeptId', [db.sequelize.fn('COUNT', 'title'), 'titles']],
+    }).then(function (tags) {
+        res.json(tags)
+    });
+})
+
+
+router.get('/counters', (req, res) => {
+    // Sample Query to get roles count for each department
+    db.User.findAll({
+        include: [{ model: db.Role, attributes: ['title'] }],
+        group: ['RoleId'],
+        attributes: ['RoleId', [db.sequelize.fn('COUNT', 'first_name'), 'employees']],
+    }).then(function (tags) {
+        res.json(tags)
+    });
+})
+router.get('/counterss', (req, res) => {
+    // Sample Query to get roles count for each department
+    db.User.findAll({
+        include: [{ model: db.Role, attributes: ['title', 'management_level'] }],
+        group: ['management_level'],
+        attributes: [[db.sequelize.fn('COUNT', 'first_name'), 'employees']],
     }).then(function (tags) {
         res.json(tags)
     });
