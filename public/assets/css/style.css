@@ -1,4 +1,11 @@
-bottom {
+html{
+    height:100%;
+}
+body{
+    min-height:100%;
+}
+
+.bottom {
     width: 100%;
     margin-top: 20px;
     min-height: 200px;
@@ -21,14 +28,20 @@ bottom {
 }
 footer {
     position: fixed;
-    height: 100px;
+    height: 30px;
     bottom: 0;
     width: 100%;
     background-color:#333333;
 }
-.depart {
-    margin: 20px 10px 20px 20px;
+.w-95{
+    width:95%;
 }
-.departman {
-    margin: 20px 20px 20px 10px;
+.h-90{
+    max-height:70vh;
+    overflow-y: scroll;
+}
+
+.item{
+  border-radius: 5px;
+  background-color: #f2f3cb;
 }

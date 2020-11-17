@@ -26,7 +26,10 @@ router.post('/createdept', verifyToken, async (req, res) => {
   try {
     const authData = await jwtVerify(req.token, secret);
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Create New Departments
-      db.Dept.create({ name: req.body.name }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to create new department', err: err.message }));
+      db.Dept.create({ name: req.body.name }).then((data) => {
+        res.status(200).json(data)
+      }
+      ).catch((err) => res.status(403).json({ msg: 'Failed to create new department', err: err.message }));
     }
     else {
       res.status(403).json({ msg: "Sorry, you can't create a new department, contact your admin" })
@@ -222,11 +225,12 @@ router.put('/updateuser', verifyToken, async (req, res) => {
 });
 
 //Delete department
-router.delete('/deletedept/:id', verifyToken, async (req, res) => {
+router.delete('/deletedept', verifyToken, async (req, res) => {
   try {
+    console.log('I came here');
     const authData = await jwtVerify(req.token, secret);
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Departments
-      db.Dept.destroy({ where: { id: req.params.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete department', err: err.message }));
+      db.Dept.destroy({ where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete department', err: err.message }));
     }
     else {
       res.status(403).json({ msg: "Sorry, you can't delete a department, contact your admin" })
@@ -238,11 +242,11 @@ router.delete('/deletedept/:id', verifyToken, async (req, res) => {
 });
 
 //Delete role
-router.delete('/deleterole/:id', verifyToken, async (req, res) => {
+router.delete('/deleterole', verifyToken, async (req, res) => {
   try {
     const authData = await jwtVerify(req.token, secret);
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Roles
-      db.Role.destroy({ where: { id: req.params.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete role', err: err.message }));
+      db.Role.destroy({ where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete role', err: err.message }));
     }
     else {
       res.status(403).json({ msg: "Sorry, you can't delete a role, contact your admin" })
@@ -282,7 +286,7 @@ router.post('/login', async (req, res) => {
       include: [db.Role],
     })
     if (user) {
-      console.log(user.dataValues, user.dataValues.Role.management_level);
+      //console.log(user.dataValues, user.dataValues.Role.management_level);
       const result = await bcryptComp(req.body.password, user.dataValues.password)
       if (result) {
         const token = await jwtSign(user, '15m');

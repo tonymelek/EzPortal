@@ -13,7 +13,7 @@
                 <a class="nav-link" href="/admin-dept/{{token.token}}">Departments</a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link" href="">Roles</a>
+                <a class="nav-link" href="/admin-role/{{token.token}}">Roles</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="">Employees</a>
@@ -36,8 +36,8 @@
                 <div class="card-body">
                     <ul>
                         {{#each depts}}
-                        {{this.dataValues.name}}
-                        {{/each}}
+                        <li> {{this.dataValues.name}}
+                            {{/each}}
 
                     </ul>
                 </div>
@@ -85,4 +85,11 @@
 
 <script>
     localStorage.setItem("ezPortal", '{{ token.token }}')
+    function refreshToken() {
+        $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
+            localStorage.setItem(`ezPortal`, res.token);
+        })
+    }
+
+    setInterval(refreshToken, 840000)
 </script>

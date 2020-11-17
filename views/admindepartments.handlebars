@@ -1,52 +1,137 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <a class="navbar-brand" href="">
-        <h2>Welcome {{admin.first_name}}</h2>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="">Main</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Departments</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="">Roles</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Employees</a>
-            </li>
-        </ul>
+    <div class="container">
+        <a class="navbar-brand" href="/admin-home/{{token}}">
+            <h2>Admin | {{admin.first_name}}</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Departments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-role/{{token}}">Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Employees</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
-<div class="row">
-    <div class="card col-3">
-        <div class="card-header depart">
-            <h2>Departments</h2>
-        </div>
-        <div class="card-body">
-            <ul></ul>
-        </div>
-    </div>
-    <div class="card col-7 departman">
-        <div class="card-header">
-            <h2>Department Manager</h2>
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label for="inputDepartmentName">Name</label>
-                        <input type="text" class="form-control" id="inputDepartmentName" placeholder="Human Resources">
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-4 col-12">
+            <div class="card mb-4 ">
+                <div class="card-header">
+                    <h2 class="text-center">Departments</h2>
+                </div>
+                <div class="card-body p-0 h-90">
+                    <div id='dept-list'>
+                        {{#each depts}}
+                        <div class="d-flex justify-content-between my-2 p-2 item w-95 mx-auto ">
+                            <div class="font-weight-bold" id='dept-{{dataValues.id}}'>
+                                {{dataValues.name}}
+                            </div>
+                            <div>
+                                <a href="#" class="d-inline-block px-2 edit" id="edit-{{dataValues.id}}"><i
+                                        class="fas fa-edit"></i></a>
+                                <a href="#" class="d-inline-block px-2 text-danger delete"
+                                    id=' delete-{{dataValues.id}}'><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                        {{/each}}
                     </div>
-                    <button type="submit" class="btn btn-primary">Create</button>
-            </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Department Manager</h2>
+                </div>
+                <div class="card-body">
+                    <form id="new-dept">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="inputDepartmentName">Name</label>
+                                <input type="text" class="form-control" id="inputDepartmentName"
+                                    placeholder="Departement">
+                            </div>
+                            <button class="btn btn-primary" id='submit'>Submit</button>
+
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 {{> footer}}
 <script>
-    localStorage.setItem("ezPortal", '{{ token.token }}')
+    localStorage.setItem("ezPortal", '{{ token }}')
+    let toEdit;
+    $('#new-dept').submit((e) => {
+
+        e.preventDefault();
+        if (document.querySelector('#submit').classList.length > 2) {
+            $.ajax({
+                type: 'put',
+                url: `../api/updatedept`,
+                headers: {
+                    'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+                },
+                data: {
+                    id: toEdit,
+                    name: $('#inputDepartmentName').val().trim()
+                }
+            }).then(() => location.reload())
+            $('#submit').removeClass('update');
+            return
+        }
+        $.post({
+            url: '/api/createdept',
+            headers: {
+                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+            },
+            data: {
+                name: $('#inputDepartmentName').val().trim()
+            }
+        }).then(res => location.reload())
+    })
+    $(document).on("click", ".delete", function (e) {
+        e.preventDefault();
+        const toDelete = this.id.split('-')[1]
+        $.ajax({
+            type: 'delete',
+            url: `../api/deletedept`,
+            headers: {
+                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+            },
+            data: {
+                id: toDelete
+            }
+        }).then(() => location.reload())
+
+    })
+    $(document).on("click", ".edit", function (e) {
+        e.preventDefault();
+        if (document.querySelector('#submit').classList.length == 2) {
+            $('#submit').addClass('update');
+        }
+        toEdit = this.id.split('-')[1]
+        $('#inputDepartmentName').val($(`#dept-${toEdit}`).text().trim())
+    });
+
+
+    function refreshToken() {
+        $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
+            localStorage.setItem(`ezPortal`, res.token);
+        })
+    }
+
+    setInterval(refreshToken, 840000)
 </script>
+{{!-- <script src="assets/js/app.js"></script> --}}
