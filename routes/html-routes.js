@@ -81,13 +81,14 @@ router.get('/admin-user/:token', async (req, res) => {
 
 //Manager-Home
 router.get('/manager-home/:token', async (req, res) => {
+
     const roles = await db.Role.findAll()
     const depts = await db.Dept.findAll()
     const users = await db.User.findAll()
     const predefTasks = await db.PreDef.findAll()
     const [xtoken, authData] = await checkToken(req.params.token)
     const token = { token: xtoken }
-    res.render('managerhome', { title: "EzPortal | Manager | Departments", admin: authData.user, depts, roles, users, predefTasks, token })
+    res.render('manager', { title: "EzPortal | Manager | Departments", admin: authData.user, depts, roles, users, predefTasks, token })
 })
 
 //Manager-Task
@@ -98,6 +99,7 @@ router.get('/manager-tasks/:token', async (req, res) => {
     const predefTasks = await db.PreDef.findAll()
     const tasks = await db.Task.findAll()
     const [token, authData] = await checkToken(req.params.token)
+    console.log(authData)
     res.render('managertask', { title: "EzPortal | Manager | Tasks", admin: authData.user, roles, depts, users, predefTasks, tasks, token })
 })
 
@@ -125,6 +127,7 @@ const checkToken = async (token) => {
             authData = await jwtVerify(newToken, secret);
         }
     }
+    console.log(authData);
     return [newToken, authData]
 }
 

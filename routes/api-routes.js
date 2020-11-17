@@ -339,7 +339,7 @@ router.post('/login', async (req, res) => {
             break;
           case 1:
 
-            res.status(200).render('employee', { title: "EzPortal | Employee", employee: user.dataValues, roles, depts, users, token });
+            res.status(200).render('employee', { title: "EzPortal | Employee", admin: user.dataValues, roles, depts, users, token });
             break;
           case 2:
             res.status(200).render('manager', { title: "EzPortal | Manager", employee: user.dataValues, roles, depts, users, token });

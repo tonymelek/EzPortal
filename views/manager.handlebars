@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
         <a class="navbar-brand" href="/manager-home/{{token}}">
-            <h2>Manager {{manager.first_name}}</h2>
+            <h2>Manager | {{admin.first_name}}</h2>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/manager-task/{{token}}">Tasks Manager</a>
+                    <a class="nav-link" href="/manager-tasks/{{token.token}}">Tasks</a>
             </ul>
         </div>
     </div>
@@ -22,10 +22,10 @@
                 <div class="card-header">
                     <h2 class="text-center">Tasks</h2>
                     <div id='task-list'>
-                    
+
+                    </div>
                 </div>
-                </div>
-                
+
             </div>
         </div>
         <div class="col-md-8 col-12">
@@ -41,3 +41,12 @@
 </div>
 </div>
 {{> footer}}
+<script>
+    localStorage.setItem("ezPortal", ' {{ token.token }}') function refreshToken() {
+        $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
+            localStorage.setItem(`ezPortal`, res.token);
+        })
+    }
+
+    setInterval(refreshToken, 840000)
+</script>
