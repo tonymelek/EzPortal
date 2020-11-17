@@ -51,7 +51,7 @@ router.get('/manager-home/:token', async (req, res) => {
     const predefTasks = await db.PreDef.findAll()
     const [xtoken, authData] = await checkToken(req.params.token)
     const token = { token: xtoken }
-    res.render('manager', { title: "EzPortal | Manager | Departments", admin: authData.user, depts, roles, users, predefTasks, token })
+    res.render('managerhome', { title: "EzPortal | Manager | Departments", admin: authData.user, depts, roles, users, predefTasks, token })
 })
 
 //Manager-Task
@@ -62,7 +62,7 @@ router.get('/manager-tasks/:token', async (req, res) => {
     const predefTasks = await db.PreDef.findAll()
     const tasks = await db.Task.findAll()
     const [token, authData] = await checkToken(req.params.token)
-    res.render('task', { title: "EzPortal | Manager | Tasks", admin: authData.user, roles, depts, users, predefTasks, tasks, token })
+    res.render('managertask', { title: "EzPortal | Manager | Tasks", admin: authData.user, roles, depts, users, predefTasks, tasks, token })
 })
 
 //Employee-Home
@@ -73,7 +73,7 @@ router.get('/user-home/:token', async (req, res) => {
     const predefTasks = await db.PreDef.findAll()
     const tasks = await db.Task.findAll()
     const [token, authData] = await checkToken(req.params.token)
-    res.render('employee', { title: "EzPortal | Employee | Tasks", admin: authData.user, roles, depts, users, predefTasks, tasks, token })
+    res.render('employeehome', { title: "EzPortal | Employee | Tasks", admin: authData.user, roles, depts, users, predefTasks, tasks, token })
 })
 
 //Check Token
