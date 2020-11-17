@@ -34,6 +34,48 @@ router.get('/admin-role/:token', async (req, res) => {
     res.render('adminroles', { title: "EzPortal | Admin | Roles", admin: authData.user, roles, depts, token })
 })
 
+//Admin Employees
+router.get('/admin-user/:token', async (req, res) => {
+    const users = await db.User.findAll()
+    const roles = await db.Role.findAll()
+    const depts = await db.Dept.findAll()
+    const [token, authData] = await checkToken(req.params.token)
+    res.render('adminemployees', { title: "EzPortal | Admin | Employees", admin: authData.user, roles, depts, users, token })
+})
+
+//Manager-Home
+router.get('/manager-home/:token', async (req, res) => {
+    const roles = await db.Role.findAll()
+    const depts = await db.Dept.findAll()
+    const users = await db.User.findAll()
+    const predefTasks = await db.PreDef.findAll()
+    const [xtoken, authData] = await checkToken(req.params.token)
+    const token = { token: xtoken }
+    res.render('manager', { title: "EzPortal | Manager | Departments", admin: authData.user, depts, roles, users, predefTasks, token })
+})
+
+//Manager-Task
+router.get('/manager-tasks/:token', async (req, res) => {
+    const users = await db.User.findAll()
+    const roles = await db.Role.findAll()
+    const depts = await db.Dept.findAll()
+    const predefTasks = await db.PreDef.findAll()
+    const tasks = await db.Task.findAll()
+    const [token, authData] = await checkToken(req.params.token)
+    res.render('task', { title: "EzPortal | Manager | Tasks", admin: authData.user, roles, depts, users, predefTasks, tasks, token })
+})
+
+//Employee-Home
+router.get('/user-home/:token', async (req, res) => {
+    const users = await db.User.findAll()
+    const roles = await db.Role.findAll()
+    const depts = await db.Dept.findAll()
+    const predefTasks = await db.PreDef.findAll()
+    const tasks = await db.Task.findAll()
+    const [token, authData] = await checkToken(req.params.token)
+    res.render('employee', { title: "EzPortal | Employee | Tasks", admin: authData.user, roles, depts, users, predefTasks, tasks, token })
+})
+
 //Check Token
 const checkToken = async (token) => {
     let authData;
