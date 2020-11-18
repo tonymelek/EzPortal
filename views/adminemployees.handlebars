@@ -35,15 +35,15 @@
                         <div class="d-flex justify-content-between my-2 p-2 item w-95 mx-auto ">
                             <div data-f_name="{{dataValues.first_name}}" data-l_name="{{dataValues.last_name}}"
                                 data-mob="{{dataValues.mobile}}" data-off="{{dataValues.office_number}}"
-                                data-email="{{dataValues.email_address}}" class="font-weight-bold"
-                                id='user-{{dataValues.id}}'>
+                                data-email="{{dataValues.email}}" data-rolid="{{dataValues.RoleId}}"
+                                class="font-weight-bold" id='user-{{dataValues.id}}'>
                                 {{dataValues.first_name}} {{dataValues.last_name}}
                             </div>
                             <div>
                                 <a href="#" class="d-inline-block px-2 edit" id="edit-{{dataValues.id}}"><i
                                         class="fas fa-edit"></i></a>
                                 <a href="#" class="d-inline-block px-2 text-danger delete"
-                                    id=' delete-{{dataValues.id}}'><i class="fas fa-trash"></i></a>
+                                    id='delete-{{dataValues.id}}'><i class="fas fa-trash"></i></a>
                             </div>
                         </div>
                         {{/each}}
@@ -70,7 +70,7 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" class="form-control" id="inputEmail" placeholder="123@fake.com">
+                            <input type="text" class="form-control" id="inputEmail" placeholder="123@fake.com">
                         </div>
                         <div class="form-group">
                             <label for="mobile">Mobile Number</label>
@@ -122,6 +122,7 @@
                     email: $('#inputEmail').val().trim(),
                     mob: parseInt($('#inputMobile').val()),
                     off: parseInt($('#inputOfficeNumber').val()),
+                    rolid: $('#inputRole').val().trim()
                 }
             }).then(() => location.reload())
             $('#submit').removeClass('update');
@@ -138,6 +139,7 @@
                 email: $('#inputEmail').val().trim(),
                 mob: parseInt($('#inputMobile').val()),
                 off: parseInt($('#inputOfficeNumber').val()),
+                rolid: $('#inputRole').val().trim()
 
             }
         }).then(res => location.reload())
@@ -147,7 +149,7 @@
         const toDelete = this.id.split('-')[1]
         $.ajax({
             type: 'delete',
-            url: `../api/deleteuser`,
+            url: `../api/deleteuser/${toDelete}`,
             headers: {
                 'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
             },
@@ -163,11 +165,12 @@
             $('#submit').addClass('update');
         }
         toEdit = this.id.split('-')[1]
-        $('#inputFirstName').val($(`#user-${toEdit}`).text().trim())
-        $('#inputLastName').val($(`#user-${toEdit}`).text().trim())
-        $('#inputEmail').val($(`#user-${toEdit}`).text().trim())
+        $('#inputFirstName').val(($(`#user-${toEdit}`).attr('data-f_name')))
+        $('#inputLastName').val(($(`#user-${toEdit}`).attr('data-l_name')))
+        $('#inputEmail').val(($(`#user-${toEdit}`).attr('data-email')))
         $('#inputMobile').val(($(`#user-${toEdit}`).attr('data-mob')))
         $('#inputOfficeNumber').val(($(`#user-${toEdit}`).attr('data-off')))
+        $('#inputRole').val(($(`#user-${toEdit}`).attr('data-rolid')))
     });
 
     function refreshToken() {
