@@ -17,16 +17,16 @@
                     <a class="nav-link" href="/admin-role/{{token.token}}">Roles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Employees</a>
+                    <a class="nav-link" href="/admin-user/{{token.token}}">Employees</a>
                 </li>
             </ul>
 
         </div>
     </div>
 </nav>
-<div class="container my-4">
+<div class="container my-5">
     <div class="row">
-        <div class="col-lg-4 col-md-6 col-12">
+        <div class=" col-md-6 col-12">
             <div class="card department">
 
                 <div class="card-header">
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 col-12">
+        <div class=" col-md-6 col-12">
             <div class="card role">
                 <div class="card-header">
 
@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12">
+        <div class="col-md-6 col-12">
             <div class="card employee">
                 <div class="card-header">
 
@@ -91,13 +91,8 @@
 {{> footer}}
 
 <script>
-    localStorage.setItem("ezPortal", ' {{ token.token }}') function refreshToken() {
-        $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
-            localStorage.setItem(`ezPortal`, res.token);
-        })
-    }
+    localStorage.setItem("ezPortal", ' {{ token.token }}')
 
-    setInterval(refreshToken, 840000)
 </script>
 <script>
     window.onload = function () {

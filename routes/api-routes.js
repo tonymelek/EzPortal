@@ -60,7 +60,6 @@ router.post('/create-first-role', async (req, res) => {
 //Create Role
 router.post('/createrole', verifyToken, async (req, res) => {
   try {
-    console.log(req.token, req.body);
     const authData = await jwtVerify(req.token, secret);
     //Only IT Admin Can Create New Roles and managers of same department
     if ((authData.user.Role.management_level === 100) || (authData.user.Role.management_level > req.body.level && authData.user.Role.DeptId == req.body.deptid)) {
@@ -102,6 +101,7 @@ router.post('/create-admin', async (req, res) => {
 
 //Create new Employee
 router.post('/createuser', verifyToken, async (req, res) => {
+  console.log(req.headers)
   const authData = await jwtVerify(req.token, secret);
   // Give the new user a default password of 123456789 and hash it before adding into the database
   if (authData.user.Role.management_level === 100) {
@@ -173,7 +173,6 @@ router.put('/updatedept', verifyToken, async (req, res) => {
 //Update role
 router.put('/updaterole', verifyToken, async (req, res) => {
   try {
-    //console.log(req.token, req.body);
     const authData = await jwtVerify(req.token, secret);
     //Only IT Admin Can Update Roles and managers of same department
     if ((authData.user.Role.management_level === 100) || (authData.user.Role.management_level > req.body.level && authData.user.Role.DeptId == req.body.deptid)) {
@@ -227,7 +226,6 @@ router.put('/updateuser', verifyToken, async (req, res) => {
 //Delete department
 router.delete('/deletedept', verifyToken, async (req, res) => {
   try {
-    console.log('I came here');
     const authData = await jwtVerify(req.token, secret);
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Departments
       db.Dept.destroy({ where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete department', err: err.message }));
@@ -278,21 +276,20 @@ router.delete('/deleteuser/:id', verifyToken, async (req, res) => {
 //Generate Token
 
 router.post('/login', async (req, res) => {
+  console.log('\n');
+  let user;
   try {
-    const user = await db.User.findOne({
+    user = await db.User.findOne({
       where: {
         email: req.body.email,
       },
       include: [db.Role],
     })
-    if (user) {
-      //console.log(user.dataValues, user.dataValues.Role.management_level);
+    if (user !== null) {
       const result = await bcryptComp(req.body.password, user.dataValues.password)
       if (result) {
         const token = await jwtSign(user, '15m');
-        const roles = await db.Role.findAll()
-        const depts = await db.Dept.findAll()
-        const users = await db.User.findAll()
+
         switch (user.dataValues.Role.management_level) {
           case 100:
             const dHome = await db.Role.findAll({
@@ -317,7 +314,6 @@ router.post('/login', async (req, res) => {
               attributes: [[db.sequelize.fn('COUNT', 'first_name'), 'employees']],
             })
             const userSum = []
-            console.log(dUser.dataValues)
             for (item of dUser) {
               switch (item.dataValues.Role.management_level) {
                 case 100:
@@ -342,15 +338,16 @@ router.post('/login', async (req, res) => {
             res.status(200).render('employee', { title: "EzPortal | Employee", employee: user.dataValues, roles, depts, users, token });
             break;
           case 2:
-            res.status(200).render('manager', { title: "EzPortal | Manager", employee: user.dataValues, roles, depts, users, token });
+
+            res.status(200).render('manager', { title: "EzPortal | Manager", manager: user.dataValues, token });
           default:
             break;
         }
-
-      } else {
-        res.status(403).json({ msg: 'Sorry, user not found' });
       }
+    } else {
+      res.status(403).send('<h1>Sorry, User not found</h1> <br><a href="/" ><h2>Try Again</h2></a>');
     }
+
   }
   catch (err) {
     throw err

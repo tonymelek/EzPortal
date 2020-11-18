@@ -16,13 +16,13 @@
                     <a class="nav-link" href="/admin-role/{{token}}">Roles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Employees</a>
+                    <a class="nav-link" href="/admin-user/{{token}}">Employees</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<div class="container mt-3">
+<div class="container my-5">
     <div class="row">
         <div class="col-md-4 col-12">
             <div class="card mb-4 ">
@@ -132,6 +132,5 @@
         })
     }
 
-    setInterval(refreshToken, 840000)
 </script>
 {{!-- <script src="assets/js/app.js"></script> --}}

@@ -13,16 +13,16 @@ const taskFn = (sequelize, DataTypes) => {
   // Associate task to user assigned_by
   Task.associate = (models) => {
     Task.belongsTo(models.User, {
+      as: "assigned_by",
       foreignKey: {
-        name: "assigned_by",
-        allowNull: false,
+        name: "assignedby"
       },
 
     });
     Task.belongsTo(models.User, {
+      as: "assigned_to",
       foreignKey: {
-        name: "assigned_to",
-        allowNull: false,
+        name: "assignedto"
       },
     });
     // Associate task to pre_defined_tasks
