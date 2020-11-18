@@ -95,22 +95,26 @@ router.get('/manager-home/:token', async (req, res) => {
 
 //Manager-Task
 router.get('/manager-tasks/:token', async (req, res) => {
-    const users = await db.User.findAll()
+    const [token, authData] = await checkToken(req.params.token)
+    const team = await db.User.findAll({
+        include: [{ model: db.Role, where: { management_level: 1, DeptId: authData.user.Role.DeptId } }]
+    })
+    console.log(team);
     const roles = await db.Role.findAll()
     const depts = await db.Dept.findAll()
     const predefTasks = await db.PreDef.findAll()
 
 
-    const [token, authData] = await checkToken(req.params.token)
+
     // console.log(authData);
     const tasks = await db.Task.findAll({
-        include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }],
+        include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
         where: {
-            assignedto: authData.user.id
+            assignedby: authData.user.id
         }
     });
-    console.log(tasks[0].dataValues);
-    res.render('managertask', { title: "EzPortal | Manager | Tasks", manager: authData.user, tasks, token })
+    console.log(tasks);
+    res.render('managertask', { title: "EzPortal | Manager | Tasks", manager: authData.user, tasks, predefTasks, team, token })
 })
 
 //Employee-Home

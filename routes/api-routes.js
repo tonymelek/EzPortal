@@ -101,7 +101,6 @@ router.post('/create-admin', async (req, res) => {
 
 //Create new Employee
 router.post('/createuser', verifyToken, async (req, res) => {
-  console.log(req.headers)
   const authData = await jwtVerify(req.token, secret);
   // Give the new user a default password of 123456789 and hash it before adding into the database
   if (authData.user.Role.management_level === 100) {
@@ -122,11 +121,11 @@ router.post('/createuser', verifyToken, async (req, res) => {
 });
 
 //Create new pre-defined tasks
-router.post('/createtask', verifyToken, async (req, res) => {
+router.post('/create-pretask', verifyToken, async (req, res) => {
   try {
     const authData = await jwtVerify(req.token, secret);
     //Only IT Admin and Managers Can Create New Tasks
-    if (authData.user.Role.management_level > 2) {
+    if (authData.user.Role.management_level > 1) {
       db.PreDef.create({
         title: req.body.title,
         body: req.body.body
@@ -141,18 +140,67 @@ router.post('/createtask', verifyToken, async (req, res) => {
   }
 });
 
+//Assign a task
+router.post('/assign-task', verifyToken, async (req, res) => {
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    const data = await db.Task.create({
+      assignedto: req.body.assignedto,
+      assignedby: authData.user.id,
+      PreDefId: req.body.preid
+    })
+    res.status(200).json(data)
+  }
+  catch (err) {
+    throw err
+  }
+});
 
-//Get all departments
+//Change password
+router.put('/changepass', verifyToken, async (req, res) => {
 
-//Get all roles
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    const hash = await bcryptHash(req.body.password)
+    if (await bcryptComp(req.body.old_pass, authData.user.password)) {
+      await db.User.update({ password: hash }, { where: { id: authData.user.id } })
+      res.status(200).json({ msg: "Password updated successfully" })
+    }
+    else {
+      res.status(200).json({ msg: "failed to update, wrong old password" })
+    }
+  }
+  catch (err) {
+    throw err
+  }
+})
+//Complete a task
+router.put('/complete-task', verifyToken, async (req, res) => {
+  console.log(req.body.task_id);
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    await db.Task.update({ completed: true }, { where: { id: req.body.task_id } })
+    res.status(200).json({ msg: 'task marked as completed' })
+  }
+  catch (err) {
+    throw err
+  }
+})
 
-//Get all employee
 
-//Get employee
+//Approve a task
+router.put('/approve-task', verifyToken, async (req, res) => {
+  console.log(req.body.task_id);
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    await db.Task.update({ approved: true }, { where: { id: req.body.task_id } })
+    res.status(200).json({ msg: 'task marked as completed' })
+  }
+  catch (err) {
+    throw err
+  }
+})
 
-//Get all tasks
-
-//Get task
 
 //Update department
 router.put('/updatedept', verifyToken, async (req, res) => {

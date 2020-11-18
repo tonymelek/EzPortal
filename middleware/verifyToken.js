@@ -9,12 +9,11 @@ const verifyToken = async (req, res, next) => {
   }
   const bearer = bearerHeader.split(' ');
   const token = bearer[1];
-
   let newToken = token;
 
   try {
     authData = await jwtVerify(token, secret);
-    console.log(authData);
+
   }
   catch (err) {
     if (err.name === 'TokenExpiredError') {
@@ -24,7 +23,6 @@ const verifyToken = async (req, res, next) => {
       throw err
     }
   }
-  console.log(token);
   req.token = token;
   next();
 };
