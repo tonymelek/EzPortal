@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
         <a class="navbar-brand" href="/manager-home/{{token}}">
-            <h2>Manager | {{admin.first_name}}</h2>
+            <h2>Manager | {{manager.first_name}}</h2>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,36 +17,57 @@
 </nav>
 <div class="container mt-3">
     <div class="row">
-        <div class="col-md-4 col-12">
+        <div class="col-md-6 col-12">
             <div class="card mb-4">
                 <div class="card-header">
                     <h2 class="text-center">Tasks</h2>
-                    <div id='task-list'>
-
-                    </div>
                 </div>
-
+                <div class="card-body">
+                    <ul>
+                        {{#each tasks}}
+                        <li>{{this.dataValues.PreDef.dataValues.title}}
+                            {{this.dataValues.assigned_by.dataValues.first_name}}
+                            {{this.dataValues.assigned_by.dataValues.last_name}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
         </div>
-        <div class="col-md-8 col-12">
+        <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-header">
                     <h2 class="text-center">Employee Details</h2>
                 </div>
                 <div class="card-body">
+                    Name: {{manager.first_name}}
+                    {{manager.last_name}} <br>
+                    mobile:{{manager.mobile}} <br>
+                    e-mail: {{manager.email}} <br>
+                    {{manager.office_number}}
+                    <h3 class="text-center">Change password</h3>
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="old">Old Password</label> <br>
+                            <input type="password" name="old" id="old">
+                        </div>
+                        <div class="form-group">
+                            <label for="new1">New Password</label> <br>
+                            <input type="password" name="new1" id="new1">
+                        </div>
+                        <div class="form-group">
+                            <label for="new2">Confirm New Password</label> <br>
+                            <input type="password" name="new2" id="new2">
+                        </div>
+                        <button class="btn btn-primary" type="submit">Change Password</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
+
 {{> footer}}
 <script>
-    localStorage.setItem("ezPortal", ' {{ token.token }}') function refreshToken() {
-        $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
-            localStorage.setItem(`ezPortal`, res.token);
-        })
-    }
+    localStorage.setItem("ezPortal", ' {{ token.token }}')
 
-    setInterval(refreshToken, 840000)
 </script>

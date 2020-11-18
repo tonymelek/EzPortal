@@ -56,15 +56,17 @@ function userFn(sequelize, DataTypes) {
     });
     // Associate Employees to Tasks
     User.hasMany(models.Task, {
+      as: "assigned_by",
       foreignKey: {
-        name: "assigned_by",
-        allowNull: false,
+        name: "assignedby",
+        allowNull: false
       },
     });
     User.hasMany(models.Task, {
+      as: "assigned_to",
       foreignKey: {
-        name: "assigned_to",
-        allowNull: false,
+        name: "assignedto",
+        allowNull: false
       },
     });
   };

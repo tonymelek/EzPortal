@@ -1,78 +1,86 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <a class="navbar-brand" href="">
-        <h2>Welcome {{admin.first_name}}</h2>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="">Main</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Departments</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="">Roles</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Employees</a>
-            </li>
-        </ul>
+    <div class="container">
+        <a class="navbar-brand" href="/admin-home/{{token}}">
+            <h2>Admin | {{admin.first_name}}</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-dept/{{token}}">Departments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-role/{{token}}">Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Employees</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
-<div class="row">
-    <div class="card col-4">
-        <div class="card-header">
-            <h2>Employees</h2>
-        </div>
-        <div class="card-footer">
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Employees</h2>
+                </div>
 
+                <div class="card-body">
+
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="card col-8">
-        <div class="card-header">
-            <h2>Employee Manager</h2>
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="first_name">First Name</label>
-                        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="last_name">Last Name</label>
-                        <input type="text" class="form-control" id="inputLastName" placeholder="Doe">
-                    </div>
+        <div class="col-md-8 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Employee Manager</h2>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" class="form-control" id="inputEmail" placeholder="123@fake.com">
+                <div class="card-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" class="form-control" id="inputEmail" placeholder="f_name@abc.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile">Mobile Number</label>
+                            <input type="tel" class="form-control" id="inputMobile" placeholder="04x xxxx xxxx">
+                        </div>
+                        {{!-- <div class="form-group">
+                            <label for="starting_date">Starting Date</label>
+                            <input type="datetime-local" class="form-control" id="inputStartingDate" placeholder="">
+                        </div> --}}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="office_number">Office Number</label>
+                                <input type="text" class="form-control" id="inputOfficeNumber" placeholder="xxxx">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="role">Role</label>
+                                <select id="inputRole" class="form-control">
+                                    <option selected>Choose...</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="mobile">Mobile Number</label>
-                    <input type="tel" class="form-control" id="inputMobile" placeholder="12 1234 1234">
-                </div>
-                <div class="form-group">
-                    <label for="starting_date">Starting Date</label>
-                    <input type="datetime-local" class="form-control" id="inputStartingDate" placeholder="">
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="office_number">Office Number</label>
-                        <input type="text" class="form-control" id="inputOfficeNumber">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="role">Role</label>
-                        <select id="inputRole" class="form-control">
-                            <option selected>Choose...</option>
-                            <option>...</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Create Employee</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
