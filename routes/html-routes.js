@@ -81,16 +81,16 @@ router.get('/admin-user/:token', async (req, res) => {
 //Manager-Home
 router.get('/manager-home/:token', async (req, res) => {
     const [xtoken, authData] = await checkToken(req.params.token)
-    const mDetials = authData.user;
+    console.log(authData.user);
     const token = { token: xtoken }
     const tasks = await db.Task.findAll({
         include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
         where: {
-            assignedto: mDetails.id
+            assignedto: authData.user.id
         }
     });
     console.log(tasks[0].dataValues.PreDef.dataValues);
-    res.render('manager', { title: "EzPortal | Manager | Departments", manager: mDetials, tasks, token })
+    res.render('manager', { title: "EzPortal | Manager | Departments", manager: authData.user, tasks, token })
 })
 
 //Manager-Task

@@ -338,8 +338,13 @@ router.post('/login', async (req, res) => {
             res.status(200).render('employee', { title: "EzPortal | Employee", employee: user.dataValues, roles, depts, users, token });
             break;
           case 2:
-
-            res.status(200).render('manager', { title: "EzPortal | Manager", manager: user.dataValues, token });
+            const tasks = await db.Task.findAll({
+              include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
+              where: {
+                assignedto: user.dataValues.id
+              }
+            });
+            res.status(200).render('manager', { title: "EzPortal | Manager", manager: user.dataValues, tasks, token });
           default:
             break;
         }
