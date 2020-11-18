@@ -128,7 +128,7 @@ router.get('/user-home/:token', async (req, res) => {
     const predefTasks = await db.PreDef.findAll()
     const tasks = await db.Task.findAll()
     const [token, authData] = await checkToken(req.params.token)
-    res.render('employeehome', { title: "EzPortal | Employee | Tasks", manager: authData.user, roles, depts, users, predefTasks, tasks, token })
+    res.render('employee', { title: "EzPortal | Employee | Tasks", employee: authData.user, roles, depts, users, predefTasks, tasks, token })
 })
 
 //Check Token
