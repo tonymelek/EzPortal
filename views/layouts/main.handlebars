@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-
+    <link rel="shortcut icon" href="/assets/img/logo.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"
         integrity="sha512-FJ2OYvUIXUqCcPf1stu+oTBlhn54W0UisZB/TNrZaVMHHhYvLBV9jMbvJYtvDe5x/WVaoXZ6KB+Uqe5hT2vlyA=="
         crossorigin="anonymous"></script>
@@ -24,8 +24,9 @@
 
 
 <body>
+    {{>header}}
     {{{ body }}}
-    <footer class="fixed-bottom"></footer>
+    {{>footer}}
 
     <script src="/assets/js/token.js"></script>
 </body>

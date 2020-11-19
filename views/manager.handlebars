@@ -15,59 +15,172 @@
         </div>
     </div>
 </nav>
-<div class="container mt-3">
+<div class="container my-4">
     <div class="row">
-        <div class="col-md-6 col-12">
+        <div class="col-md-5 col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2 class="text-center">Tasks</h2>
+                    <h2 class="text-center"> My Tasks</h2>
                 </div>
                 <div class="card-body">
-                    <ul>
+                    <div id='tasks-list'>
                         {{#each tasks}}
-                        <li>{{this.dataValues.PreDef.dataValues.title}}
-                            {{this.dataValues.assigned_by.dataValues.first_name}}
-                            {{this.dataValues.assigned_by.dataValues.last_name}}</li>
+                        {{#unless dataValues.approved}}
+                        {{#if dataValues.completed}}
+                        <h5 class="text-center">Completed waiting Approval</h5>
+                        <div class="d-flex justify-content-between my-2 p-2 item w-95 mx-auto ">
+                            <div class="font-weight-bold" id='task-{{dataValues.id}}'>
+                                {{dataValues.PreDef.dataValues.title}} ||
+                                {{this.dataValues.assigned_by.dataValues.first_name}}
+                                {{this.dataValues.assigned_by.dataValues.last_name}}
+                            </div>
+
+                        </div>
+                        {{else}}
+                        <h5 class="text-center">To Be Done</h5>
+                        <div class="d-flex justify-content-between my-2 p-2 item w-95 mx-auto ">
+                            <div class="font-weight-bold" id='task-{{dataValues.id}}'>
+                                {{dataValues.PreDef.dataValues.title}} ||
+                                {{this.dataValues.assigned_by.dataValues.first_name}}
+                                {{this.dataValues.assigned_by.dataValues.last_name}}
+                            </div>
+                            <div>
+                                <a href="#" class="d-inline-block px-2 completed text-success"
+                                    data-assignedto='{{dataValues.assignedto}}' id="complete-{{dataValues.id}}"><i
+                                        class="fas fa-check"></i></a>
+                            </div>
+                        </div>
+                        {{/if}}
+
+                        {{/unless}}
                         {{/each}}
-                    </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-12">
-            <div class="card">
+        <div class="col-md-7 col-12">
+            <div class="card mb-4">
                 <div class="card-header">
                     <h2 class="text-center">Employee Details</h2>
                 </div>
                 <div class="card-body">
-                    Name: {{manager.first_name}}
-                    {{manager.last_name}} <br>
-                    mobile:{{manager.mobile}} <br>
-                    e-mail: {{manager.email}} <br>
-                    {{manager.office_number}}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control" id="inputFirstName" value={{manager.first_name}}
+                                disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="last_name">Last Name</label>
+
+                            <input type="text" class="form-control" id="inputLastName" value={{manager.last_name}}
+                                disabled>
+
+                        </div>
+                    </div>
+                    <div class=" form-group">
+                        <label for="email">Email Address</label>
+
+                        <input type="email" class="form-control" id="inputEmail" value={{manager.email}} disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" class="form-control" id="inputMobile" placeholder={{manager.mobile}} disabled>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="office_number">Office Number</label>
+                            <input type="text" class="form-control" id="inputOfficeNumber"
+                                value={{manager.office_number}} disabled>
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="role">Role</label>
+                            <select id="inputRole" class="form-control" disabled>
+
+                                <option value={{manager.RoleId}}>{{manager.Role.title}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card my-4">
+                <div class="card-header">
                     <h3 class="text-center">Change password</h3>
-                    <form action="" method="post">
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" id="change-pass">
                         <div class="form-group">
                             <label for="old">Old Password</label> <br>
-                            <input type="password" name="old" id="old">
+                            <input class="form-control" type="password" name="old" id="old">
                         </div>
                         <div class="form-group">
                             <label for="new1">New Password</label> <br>
-                            <input type="password" name="new1" id="new1">
+                            <input class="form-control" type="password" name="new1" id="new1">
                         </div>
                         <div class="form-group">
                             <label for="new2">Confirm New Password</label> <br>
-                            <input type="password" name="new2" id="new2">
+                            <input class="form-control" type="password" name="new2" id="new2">
                         </div>
                         <button class="btn btn-primary" type="submit">Change Password</button>
                     </form>
                 </div>
             </div>
+
+
         </div>
     </div>
 </div>
 
+
 {{> footer}}
 <script>
-    localStorage.setItem("ezPortal", ' {{ token.token }}')
+    localStorage.setItem("ezPortal", '{{token.token}}')
+    $('#change-pass').submit((e) => {
+        e.preventDefault();
+        if ($('#new1').val() === $('#new2').val()) {
+            $.ajax({
+                type: 'put',
+                url: `../api/changepass`,
+                headers: {
+                    'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+                },
+                data: {
+                    password: $('#new1').val(),
+                    old_pass: $('#old').val()
+
+                }
+            }).then((result) => {
+                console.log(result)
+                location.reload()
+            })
+        } else {
+            alert('password mismatch')
+        }
+    })
+    $(document).on("click", ".completed", function (e) {
+        e.preventDefault();
+        const toComplete = this.id.split('-')[1]
+        console.log(toComplete)
+        $.ajax({
+            type: 'put',
+            url: `../api/complete-task`,
+            headers: {
+                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+            },
+            data: {
+                task_id: toComplete
+
+            }
+        }).then((result) => {
+            console.log(result)
+            location.reload()
+        })
+    })
+
 
 </script>
