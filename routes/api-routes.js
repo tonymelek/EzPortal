@@ -331,16 +331,17 @@ router.post('/login', async (req, res) => {
       },
       include: [db.Role],
     })
-    if (user !== null) {
-      const result = await bcryptComp(req.body.password, user.dataValues.password)
-      if (result) {
-        const token = await jwtSign(user, '15m');
-        res.status(200).json({ token, level: user.dataValues.Role.management_level })
-      } else {
-        res.status(403).send('<h1>Sorry, Wrong user or password</h1> <br><a href="/" ><h2>Try Again</h2></a>');
-      }
+    if (user == null) {
+      res.send('<h1>Sorry, User not found</h1> <br><a href="/" ><h2>Try Again</h2></a>');
+      return
+    }
+    const result = await bcryptComp(req.body.password, user.dataValues.password)
+    if (result) {
+      const token = await jwtSign(user, '15m');
+      res.status(200).json({ token, level: user.dataValues.Role.management_level })
+      return
     } else {
-      res.status(403).send('<h1>Sorry, User not found</h1> <br><a href="/" ><h2>Try Again</h2></a>');
+      res.send('<h1>Sorry, Wrong user or password</h1> <br><a href="/" ><h2>Try Again</h2></a>');
     }
   }
   catch (err) {
