@@ -81,7 +81,6 @@ router.get('/admin-user/:token', async (req, res) => {
 //Manager-Home
 router.get('/manager-home/:token', async (req, res) => {
     const [xtoken, authData] = await checkToken(req.params.token)
-    console.log(authData.user);
     const token = { token: xtoken }
     const tasks = await db.Task.findAll({
         include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
@@ -89,7 +88,6 @@ router.get('/manager-home/:token', async (req, res) => {
             assignedto: authData.user.id
         }
     });
-    console.log(tasks[0].dataValues.PreDef.dataValues);
     res.render('manager', { title: "EzPortal | Manager | Departments", manager: authData.user, tasks, token })
 })
 
@@ -97,15 +95,9 @@ router.get('/manager-home/:token', async (req, res) => {
 router.get('/manager-tasks/:token', async (req, res) => {
     const [token, authData] = await checkToken(req.params.token)
     const team = await db.User.findAll({
-        include: [{ model: db.Role, where: { management_level: 1, DeptId: authData.user.Role.DeptId } }]
+        include: [{ model: db.Role, where: { management_level: [1, 2], DeptId: authData.user.Role.DeptId } }]
     })
-    console.log(team);
-    const roles = await db.Role.findAll()
-    const depts = await db.Dept.findAll()
     const predefTasks = await db.PreDef.findAll()
-
-
-
     // console.log(authData);
     const tasks = await db.Task.findAll({
         include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
@@ -113,7 +105,6 @@ router.get('/manager-tasks/:token', async (req, res) => {
             assignedby: authData.user.id
         }
     });
-    console.log(tasks);
     res.render('managertask', { title: "EzPortal | Manager | Tasks", manager: authData.user, tasks, predefTasks, team, token })
 })
 
@@ -125,7 +116,7 @@ router.get('/user-home/:token', async (req, res) => {
     const predefTasks = await db.PreDef.findAll()
     const tasks = await db.Task.findAll()
     const [token, authData] = await checkToken(req.params.token)
-    res.render('employee', { title: "EzPortal | Employee | Tasks", employee: authData.user, roles, depts, users, predefTasks, tasks, token })
+    res.render('employeehome', { title: "EzPortal | Employee | Tasks", manager: authData.user, roles, depts, users, predefTasks, tasks, token })
 })
 
 //Check Token
@@ -143,78 +134,6 @@ const checkToken = async (token) => {
     }
     return [newToken, authData]
 }
-
-
-
-
-
-
-//Dummy Activity
-router.get('/counter', (req, res) => {
-    // Sample Query to get roles count for each department
-    db.Role.findAll({
-        include: [{ model: db.Dept, attributes: ['name'] }],
-        group: ['DeptId'],
-        attributes: ['DeptId', [db.sequelize.fn('COUNT', 'title'), 'titles']],
-    }).then(function (tags) {
-        res.json(tags)
-    });
-})
-
-
-router.get('/counters', (req, res) => {
-    // Sample Query to get roles count for each department
-    db.User.findAll({
-        include: [{ model: db.Role, attributes: ['title'] }],
-        group: ['RoleId'],
-        attributes: ['RoleId', [db.sequelize.fn('COUNT', 'first_name'), 'employees']],
-    }).then(function (tags) {
-        res.json(tags)
-    });
-})
-router.get('/counterss', (req, res) => {
-    // Sample Query to get roles count for each department
-    db.User.findAll({
-        include: [{ model: db.Role, attributes: ['title', 'management_level'] }],
-        group: ['management_level'],
-        attributes: [[db.sequelize.fn('COUNT', 'first_name'), 'employees']],
-    }).then(function (tags) {
-        res.json(tags)
-    });
-})
-router.get('/tasks/:id', (req, res) => {
-    // Sample Query to get roles count for each department
-    db.Task.findAll({
-        include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }],
-        where: {
-            assignedby: req.params.id
-        }
-
-    }).then(function (tags) {
-        res.json(tags)
-    });
-})
-
-router.post('/predef', (req, res) => {
-    db.PreDef.create({
-        title: req.body.title,
-        body: req.body.body
-    }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to create new task', err: err.message }));
-})
-router.post('/assigntask', (req, res) => {
-    db.Task.create({
-        assignedby: req.body.assigned_by,
-        assignedto: req.body.assigned_to,
-        PreDefId: req.body.task,
-
-    }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to create new task', err: err.message }));
-})
-router.get('/manager', (req, res) => {
-    res.render('manager')
-})
-
-
-
 
 
 module.exports = router;

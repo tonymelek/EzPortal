@@ -15,10 +15,10 @@
         </div>
     </div>
 </nav>
-<div class="container mt-3">
+<div class="container my-5">
     <div class="row">
         <div class="col-md-5 col-12">
-            <div class="card mb-4">
+            <div class="card mb-5">
                 <div class="card-header">
                     <h2 class="text-center">Tasks of my Team</h2>
                 </div>
@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="col-md-7 col-12">
-            <div class="card mb-4">
+            <div class="card mb-5">
                 <div class="card-header">
                     <h2 class="text-center">Assign Task</h2>
                 </div>
@@ -93,7 +93,7 @@
                     </form>
                 </div>
             </div>
-            <div class="card mb-4">
+            <div class="card mb-5">
                 <div class="card-header">
                     <h2 class="text-center">Pre-Defined Task</h2>
                 </div>
@@ -150,7 +150,6 @@
     $(document).on("click", ".approve", function (e) {
         e.preventDefault();
         const toComplete = this.id.split('-')[1]
-        console.log(toComplete)
         $.ajax({
             type: 'put',
             url: `../api/approve-task`,
@@ -162,14 +161,12 @@
 
             }
         }).then((result) => {
-            console.log(result)
             location.reload()
         })
     })
     $(document).on("click", ".completed", function (e) {
         e.preventDefault();
         const toComplete = this.id.split('-')[1]
-        console.log(toComplete)
         $.ajax({
             type: 'put',
             url: `../api/complete-task`,
@@ -181,7 +178,6 @@
 
             }
         }).then((result) => {
-            console.log(result)
             location.reload()
         })
     });

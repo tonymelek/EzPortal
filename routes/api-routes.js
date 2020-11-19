@@ -176,7 +176,6 @@ router.put('/changepass', verifyToken, async (req, res) => {
 })
 //Complete a task
 router.put('/complete-task', verifyToken, async (req, res) => {
-  console.log(req.body.task_id);
   try {
     const authData = await jwtVerify(req.token, secret);
     await db.Task.update({ completed: true }, { where: { id: req.body.task_id } })
@@ -190,7 +189,6 @@ router.put('/complete-task', verifyToken, async (req, res) => {
 
 //Approve a task
 router.put('/approve-task', verifyToken, async (req, res) => {
-  console.log(req.body.task_id);
   try {
     const authData = await jwtVerify(req.token, secret);
     await db.Task.update({ approved: true }, { where: { id: req.body.task_id } })
@@ -337,70 +335,13 @@ router.post('/login', async (req, res) => {
       const result = await bcryptComp(req.body.password, user.dataValues.password)
       if (result) {
         const token = await jwtSign(user, '15m');
-
-        switch (user.dataValues.Role.management_level) {
-          case 100:
-            const dHome = await db.Role.findAll({
-              include: [{ model: db.Dept, attributes: ['name'] }],
-              group: ['DeptId'],
-              attributes: ['DeptId', [db.sequelize.fn('COUNT', 'title'), 'titles']]
-            });
-            for (item of dHome) {
-              item.dataValues.DeptName = item.dataValues.Dept.name
-            }
-            const dRole = await db.User.findAll({
-              include: [{ model: db.Role, attributes: ['title'] }],
-              group: ['RoleId'],
-              attributes: ['RoleId', [db.sequelize.fn('COUNT', 'first_name'), 'employees']],
-            })
-            for (item of dRole) {
-              item.dataValues.roleT = item.dataValues.Role.title
-            }
-            const dUser = await db.User.findAll({
-              include: [{ model: db.Role, attributes: ['title', 'management_level'] }],
-              group: ['management_level'],
-              attributes: [[db.sequelize.fn('COUNT', 'first_name'), 'employees']],
-            })
-            const userSum = []
-            for (item of dUser) {
-              switch (item.dataValues.Role.management_level) {
-                case 100:
-                  userSum.push({ level: 'Admin', num: item.dataValues.employees })
-                  break;
-                case 2:
-                  userSum.push({ level: 'Senior', num: item.dataValues.employees })
-                  break;
-                case 1:
-                  userSum.push({ level: 'Junior', num: item.dataValues.employees })
-                  break;
-                default:
-                  break;
-              }
-
-
-            }
-            res.status(200).render('admin', { title: "EzPortal | Admin", admin: user.dataValues, dHome, dRole, userSum, token });
-            break;
-          case 1:
-
-            res.status(200).render('employee', { title: "EzPortal | Employee", employee: user.dataValues, roles, depts, users, token });
-            break;
-          case 2:
-            const tasks = await db.Task.findAll({
-              include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
-              where: {
-                assignedto: user.dataValues.id
-              }
-            });
-            res.status(200).render('manager', { title: "EzPortal | Manager", manager: user.dataValues, tasks, token });
-          default:
-            break;
-        }
+        res.status(200).json({ token, level: user.dataValues.Role.management_level })
+      } else {
+        res.status(403).send('<h1>Sorry, Wrong user or password</h1> <br><a href="/" ><h2>Try Again</h2></a>');
       }
     } else {
       res.status(403).send('<h1>Sorry, User not found</h1> <br><a href="/" ><h2>Try Again</h2></a>');
     }
-
   }
   catch (err) {
     throw err
