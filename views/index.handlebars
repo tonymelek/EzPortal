@@ -33,7 +33,11 @@
                 password: $('#password').val()
             }
         }).then(function (result) {
-            console.log(result.level)
+            if (result.level == undefined) {
+
+                alertify.alert('Wrong email or password, Please,try again');
+                return
+            }
             localStorage.setItem('ezPortal', result.token.token)
             switch (result.level) {
                 case 100:
