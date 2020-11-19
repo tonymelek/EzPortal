@@ -49,19 +49,18 @@
             </div>
         </div>
         <div class="col-md-8 col-12">
-            <div class="card">
+            <div class="card mb-5">
                 <div class="card-header">
                     <h2 class="text-center">Department Manager</h2>
                 </div>
                 <div class="card-body">
                     <form id="new-dept">
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="inputDepartmentName">Name</label>
-                                <input type="text" class="form-control" id="inputDepartmentName"
-                                    placeholder="Department">
-                            </div>
-                            <button class="btn btn-primary" id='submit'>Submit</button>
+
+                        <div class="form-group">
+                            <label for="inputDepartmentName">Name</label>
+                            <input type="text" class="form-control" id="inputDepartmentName" placeholder="Department">
+                        </div>
+                        <button class="btn btn-primary" id='submit'>Submit</button>
 
                     </form>
                 </div>
@@ -69,7 +68,9 @@
         </div>
     </div>
 </div>
-{{> footer}}
+
+
+
 <script>
     localStorage.setItem("ezPortal", '{{token}}')
     let toEdit;
@@ -125,12 +126,4 @@
         $('#inputDepartmentName').val($(`#dept-${toEdit}`).text().trim())
     });
 
-
-    function refreshToken() {
-        $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
-            localStorage.setItem(`ezPortal`, res.token);
-        })
-    }
-
 </script>
-{{!-- <script src="assets/js/app.js"></script> --}}

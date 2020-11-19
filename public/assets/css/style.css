@@ -3,35 +3,52 @@ html{
 }
 body{
     min-height:100%;
+    background-color: #354F68;
 }
+.welcome{
 
-.bottom {
+color:#E2EBF3;
+
+}
+.login-card{
+    background-color: #E2F0FB;
+    min-height:40vh;
+}
+.login-cont{
+    background-color: #2A4455;
+    border-radius: 20px;
+    min-height:40vh;
+}
+/* .bottom {
     width: 100%;
     margin-top: 20px;
     min-height: 200px;
     max-height: 200px;
-}
-.department {
+} */
+/* .department {
     max-height: 375px;
     min-height: 375px;
     margin: 20px 10px 20px 20px;
-}
-.role {
+} */
+/* .role {
     max-height: 375px;
     min-height: 375px;
     margin: 20px 10px 10px 10px;
-}
-.employee {
+} */
+/* .employee {
     max-height: 375px;
     min-height: 375px;
     margin: 20px 20px 20px 10px;
+} */
+header{
+    background-color:#2A4455;
 }
 footer {
+    height: 60px;
+    background-color:#2A4455;
     position: fixed;
-    height: 30px;
     bottom: 0;
     width: 100%;
-    background-color:#333333;
 }
 .w-95{
     width:95%;

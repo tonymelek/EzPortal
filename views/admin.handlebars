@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="#">
             <h2> Admin | {{admin.first_name}}</h2>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
@@ -27,7 +27,7 @@
 <div class="container my-5">
     <div class="row">
         <div class=" col-md-6 col-12">
-            <div class="card department">
+            <div class="card department mb-5">
 
                 <div class="card-header">
 
@@ -51,7 +51,7 @@
         </div>
 
         <div class=" col-md-6 col-12">
-            <div class="card role">
+            <div class="card role mb-5">
                 <div class="card-header">
 
                     <h3 class="text-center">Roles</h3>
@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="col-md-6 col-12">
-            <div class="card employee">
+            <div class="card employee mb-5">
                 <div class="card-header">
 
                     <h3 class="text-center">Employees</h3>
@@ -87,9 +87,6 @@
         </div>
     </div>
 </div>
-
-{{> footer}}
-
 <script>
     localStorage.setItem("ezPortal", '{{token.token}}')
 
