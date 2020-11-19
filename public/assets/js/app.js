@@ -65,3 +65,7 @@ $(document).on("click", '#signin', () => {
 //     // })
 //     // location.href = `/lander/${localStorage.getItem('ezPortal')}`
 // });
+
+
+
+

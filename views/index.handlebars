@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="card col-lg-6 col-md-8 col-11 m-0 mb-3 p-0">
             <div class="card-body login-card p-3">
-                <form action="/api/login" method="POST">
+                <form id='login-form'>
                     <div class="form-group">
                         <label for="email">Email Address</label>
                         <input type="text" class="form-control" id="email" name="email" placeholder="Email">
@@ -17,11 +17,37 @@
                         <input type="password" class="form-control" id="password" name="password"
                             placeholder="Password">
                     </div>
-
                     <button type="submit" class="btn btn-success btn-lg d-block px-5" id="signin">Log in</button>
                 </form>
             </div>
         </div>{{!-- card --}}
     </div>
 </div>
-{{!-- </div> --}}
+<script>
+    $('#login-form').submit(function (e) {
+        e.preventDefault();
+        $.post({
+            url: 'api/login',
+            data: {
+                email: $('#email').val().trim(),
+                password: $('#password').val()
+            }
+        }).then(function (result) {
+            console.log(result.level)
+            localStorage.setItem('ezPortal', result.token.token)
+            switch (result.level) {
+                case 100:
+                    location.href = (`/admin-home/${result.token.token}`)
+                    break;
+                case 2:
+                    location.href = (`/manager-home/${result.token.token}`)
+                    break;
+                case 1:
+                    location.href = (`/user-home/${result.token.token}`)
+                    break;
+                default:
+                    break;
+            }
+        })
+    })
+</script>
