@@ -24,6 +24,13 @@ function userFn(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
 
+      // validate: {
+      //   len: {
+      //     args: [10, 10],
+      //     msg: "The mobile number should be exactly 10 characters",
+      //   },
+      // },
+
     },
     office_number: {
       type: DataTypes.STRING,

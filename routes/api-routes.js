@@ -42,8 +42,8 @@ router.post('/createdept', verifyToken, async (req, res) => {
 
 // Create First Role without Token
 router.post('/create-first-role', async (req, res) => {
-  const depts = await db.Role.findAll();
-  if (depts.length === 0) {
+  const roles = await db.Role.findAll();
+  if (roles.length === 0) {
     db.Role.create({
       title: req.body.title,
       hourly_rate: req.body.wage,
