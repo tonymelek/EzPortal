@@ -1,5 +1,5 @@
 ![License: 'MIT'](https://img.shields.io/badge/License-MIT-yellow.svg)
-# Project 2
+# Ez Portal
 * [Description](#description)
 * [Installation](#installation)
 * [Usage](#usage)
@@ -8,7 +8,7 @@
 * [Tests](#tests)
 * [Questions](#questions)
 ## Description
-That's Project 2
+Ez-Portal is a HR management system, that uses a wide-range of technologies on both front-end (HTML,JS,CSS, Bootstrap, ChartJS) and back-end (MySQL,Sequelize, NodeJS, Express JS,Handlebars,Jason Web Tokens)
 ## Installation
 
 ## Usage
