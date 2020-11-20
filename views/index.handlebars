@@ -1,27 +1,57 @@
-<div class="container-fluid">
-    <div class="jumbotron">
-        <h1 class="text-center text-success">Employee Management</h1>
-        <hr>
-        <div class="row justify-content-center">
-            <div class="card col-lg-6 col-md-8 col-11 p-0">
-                <div class="card-header">
-                    <h5 class="text-danger text-center">Please Enter Username and Password</h5>
-                </div>
-                <div class="card-body">
-                    <form action="" method="POST" role="form">
-                        <div class="form-group">
-                            <label for="">Employee Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Username">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Password</label>
-                            <input type="text" class="form-control" id="password" placeholder="Password">
-                        </div>
-
-                        <button type="button" class="btn btn-success btn-lg d-block ml-auto px-5">Sign In</button>
-                    </form>
-                </div>
-            </div>{{!-- card --}}
-        </div>
+<div class="container-fluid p-0">
+    {{!-- <div class="jumbotron h-100 p-0 mt-3 login-cont"> --}}
+    <div class="login-cont d-flex flex-column justify-content-center">
+        <h1 class="text-center welcome m-0 display-1">Welcome Back</h1>
+    </div>
+    <hr class="m-0">
+    <div class="row justify-content-center">
+        <div class="card col-lg-6 col-md-8 col-11 m-0 mb-3 p-0">
+            <div class="card-body login-card p-3">
+                <form id='login-form'>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg d-block px-5" id="signin">Log in</button>
+                </form>
+            </div>
+        </div>{{!-- card --}}
     </div>
 </div>
+<script>
+    $('#login-form').submit(function (e) {
+        e.preventDefault();
+        $.post({
+            url: 'api/login',
+            data: {
+                email: $('#email').val().trim(),
+                password: $('#password').val()
+            }
+        }).then(function (result) {
+            if (result.level == undefined) {
+
+                alertify.alert('Wrong email or password, Please,try again');
+                return
+            }
+            localStorage.setItem('ezPortal', result.token.token)
+            switch (result.level) {
+                case 100:
+                    location.href = (`/admin-home/${result.token.token}`)
+                    break;
+                case 2:
+                    location.href = (`/manager-home/${result.token.token}`)
+                    break;
+                case 1:
+                    location.href = (`/user-home/${result.token.token}`)
+                    break;
+                default:
+                    break;
+            }
+        })
+    })
+</script>

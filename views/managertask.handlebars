@@ -1,0 +1,184 @@
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/manager-home/{{token}}">
+            <h2>Manager | {{manager.first_name}}</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/manager-tasks/{{token}}">Tasks</a>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-5 col-12">
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h2 class="text-center">Tasks of my Team</h2>
+                </div>
+                <div class="card-body">
+                    <div id='tasks-list'>
+                        {{#each tasks}}
+                        {{#unless dataValues.approved}}
+                        {{#if dataValues.completed}}
+                        {{!-- <h5 class="text-center">To Be Approved</h5> --}}
+                        <div class="d-flex justify-content-between my-2 p-2 itemA w-95 mx-auto ">
+                            <div class="font-weight-bold" id='task-{{dataValues.id}}'>
+                                {{dataValues.PreDef.dataValues.title}} ||
+                                {{this.dataValues.assigned_to.dataValues.first_name}}
+                                {{this.dataValues.assigned_to.dataValues.last_name}}
+                            </div>
+                            <div>
+                                <a href="#" class="d-inline-block px-2 approve text-success"
+                                    data-assignedto='{{dataValues.assignedto}}' id="approve-{{dataValues.id}}"><i
+                                        class="fas fa-check-double"></i></a>
+                            </div>
+                        </div>
+                        {{else}}
+                        {{!-- <h5 class="text-center">To Be Done</h5> --}}
+                        <div class="d-flex justify-content-between my-2 p-2 item w-95 mx-auto ">
+                            <div class="font-weight-bold" id='task-{{dataValues.id}}'>
+                                {{dataValues.PreDef.dataValues.title}} ||
+                                {{this.dataValues.assigned_to.dataValues.first_name}}
+                                {{this.dataValues.assigned_to.dataValues.last_name}}
+                            </div>
+                            <div>
+                                <a href="#" class="d-inline-block px-2 completed text-success"
+                                    data-assignedto='{{dataValues.assignedto}}' id="complete-{{dataValues.id}}"><i
+                                        class="fas fa-check"></i></a>
+                            </div>
+                        </div>
+                        {{/if}}
+
+                        {{/unless}}
+                        {{/each}}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 col-12">
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h2 class="text-center">Assign Task</h2>
+                </div>
+                <div class="card-body">
+                    <form id="assign-task">
+                        <div class="form-group">
+                            <label for="pre-task">Select a pre-defined task</label>
+
+                            <select class="form-control" name="pre-task" id="pre-task">
+                                {{#each predefTasks}}
+                                <option value="{{dataValues.id}}">{{dataValues.title}}</option>
+                                {{/each}}
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="assign-to">Assign To</label>
+                            <select class="form-control" name="assign-to" id="assign-to">
+                                {{#each team}}
+                                <option value="{{dataValues.id}}">{{dataValues.first_name}} {{dataValues.last_name}}
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Assign Task</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h2 class="text-center">Pre-Defined Task</h2>
+                </div>
+                <div class="card-body">
+                    <form id="add-task">
+                        <div class="form-group">
+                            <label for="task-name">Task Name</label>
+                            <input class="form-control" type="text" name="task-name" id="task-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-desc">Task Description</label>
+                            <textarea class="form-control" name="task-desc" id="task-desc"></textarea>
+
+                        </div>
+                        <button class="btn btn-primary" type="submit">Add Task</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{{> footer}}
+<script>
+    localStorage.setItem("ezPortal", '{{token}}')
+    $('#add-task').submit((e) => {
+        e.preventDefault();
+        $.post({
+            url: `../api/create-pretask`,
+            headers: {
+                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+            },
+            data: {
+                title: $('#task-name').val().trim(),
+                body: $('#task-desc').val().trim()
+
+            }
+        }).then(() => location.reload())
+    })
+    $('#assign-task').submit((e) => {
+        e.preventDefault();
+        $.post({
+            url: `../api/assign-task`,
+            headers: {
+                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+            },
+            data: {
+                assignedto: $('#assign-to').val(),
+                preid: $('#pre-task').val()
+
+            }
+        }).then(() => location.reload())
+    })
+    $(document).on("click", ".approve", function (e) {
+        e.preventDefault();
+        const toComplete = this.id.split('-')[1]
+        $.ajax({
+            type: 'put',
+            url: `../api/approve-task`,
+            headers: {
+                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+            },
+            data: {
+                task_id: toComplete
+
+            }
+        }).then((result) => {
+            location.reload()
+        })
+    })
+    $(document).on("click", ".completed", function (e) {
+        e.preventDefault();
+        const toComplete = this.id.split('-')[1]
+        $.ajax({
+            type: 'put',
+            url: `../api/complete-task`,
+            headers: {
+                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+            },
+            data: {
+                task_id: toComplete
+
+            }
+        }).then((result) => {
+            location.reload()
+        })
+    });
+</script>

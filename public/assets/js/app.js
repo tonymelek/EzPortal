@@ -1,7 +1,71 @@
-$.post({
-    url: '/api/adduser',
-    headers: {
-        'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoidG9ueUBhYmMuY29tIiwicGFzc3dvcmQiOiIxMjMifSwiaWF0IjoxNjA1MTY1MzIwLCJleHAiOjE2MDUyNTE3MjB9.J_ioOq2YYGlTXvljJ6dOJ6eRBZ3Z4ZGLYYSK5hLF2Gw"
+
+
+let days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let tasksCompleted = [2, 4, 6, 1, 3, 13, 8, 10, 12, 14];
+
+
+new Chart(document.getElementById("myChart"), {
+    type: "line",
+    data: {
+        labels: days,
+        datasets: [{
+            data: tasksCompleted,
+            label: "Tasks Completed",
+            borderColor: "#3e95cd",
+            fill: false
+        }
+        ]
     }
-    }).then(res=>
-        console.log(res)).catch(err=>console.log(err))
+});
+
+function refreshToken() {
+    $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
+        localStorage.setItem(`ezPortal`, res.token);
+    })
+}
+
+
+<<<<<<< Updated upstream
+
+// // $(document).on("click", '#signin', (e) => {
+// //     e.preventDefault();
+// //     console.log('hfjdshfkjds');
+// //     $.post({
+// //         url: '/api/login',
+// //         data: {
+// //             "email": $('#email').val().trim(),
+// //             "password": $('#password').val().trim()
+// //         }
+// //     }).then(res => {
+// //         console.log(res);
+// //         // localStorage.setItem(`ezPortal`, res.token);
+// //         // location.href = `/lander/${localStorage.getItem('ezPortal')}`
+// //     })
+=======
+$(document).on("click", '#signin', () => {
+    setInterval(refreshToken, 840000)
+
+})
+
+>>>>>>> Stashed changes
+
+
+// $('#x').submit((e) => {
+//     e.preventDefault();
+//     e.stopPropagation();
+//     console.log('I came here');
+//     // $.post({
+//     //     url: '/api/createdept',
+//     //     data: {
+//     //         "name": $('#new-entry').val()
+//     //     },
+//     //     headers: {
+//     //         'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+//     //     }
+//     // })
+//     // location.href = `/lander/${localStorage.getItem('ezPortal')}`
+// });
+
+
+
+
