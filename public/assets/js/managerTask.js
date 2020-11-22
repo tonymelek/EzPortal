@@ -1,14 +1,22 @@
 let toEdit;
 //Delete pre-defined Task
 $('.deleteTask').click(function () {
+    const toDelete = this.id.split('-')[1]
+
     $.ajax({
         type: 'delete',
         url: '../api/delete-pre-task',
         headers: { 'Authorization': `bearer ${localStorage.getItem('ezPortal')}` },
         data: {
-            id: this.id.split('-')[1]
+            id: toDelete
         }
-    }).then((result) => $(this).hide())
+    }).then((result) => {
+        $(`#preTask-${toDelete}`).removeClass('d-flex');
+        $(`#preTask-${toDelete}`).hide();
+    })
+})
+$('.close').click(() => {
+    location.reload()
 })
 //Display details of task to be editted
 $('.editTask').click(function () {
