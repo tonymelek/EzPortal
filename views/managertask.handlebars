@@ -108,7 +108,11 @@
                             <textarea class="form-control" name="task-desc" id="task-desc"></textarea>
 
                         </div>
-                        <button class="btn btn-primary" type="submit">Add Task</button>
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <button class="btn btn-primary" type="submit">Add Task</button>
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#taskEdit">Edit/Delete
+                                Tasks</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -116,9 +120,102 @@
     </div>
 </div>
 </div>
-{{> footer}}
+<div class="modal" tabindex="-1" role="dialog" id='taskEdit'>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit and Delete Tasks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-12">
+                        <div id='pre-tasks-list'>
+                            {{#each predefTasks}}
+                            <div class="d-flex justify-content-between my-2 p-2 item w-95 mx-auto ">
+                                <div class="font-weight-bold" id='preTask-{{dataValues.id}}'>
+                                    {{dataValues.title}}
+                                </div>
+                                <div>
+                                    <a href="#" class="d-inline-block px-2 editTask" data-modalt='{{dataValues.title}}'
+                                        data-modalb='{{dataValues.body}}' id="edit-{{dataValues.id}}"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" class="d-inline-block px-2 text-danger deleteTask"
+                                        id=' delete-{{dataValues.id}}'><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-7">
+                        <div class="card mb-5">
+                            <div class="card-header">
+                                <h2 class="text-center">Pre-Defined Task</h2>
+                            </div>
+                            <div class="card-body">
+                                <form id="edit-task">
+                                    <div class="form-group">
+                                        <label for="task-name">Task Name</label>
+                                        <input class="form-control" type="text" name="task-name" id="modal-task-name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="task-desc">Task Description</label>
+                                        <textarea class="form-control" name="task-desc" id="modal-task-desc"></textarea>
+
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="update-btn">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 <script>
     localStorage.setItem("ezPortal", '{{token}}')
+    let toEdit;
+    $('.deleteTask').click(function () {
+
+        $.ajax({
+            type: 'delete',
+            url: '../api/delete-pre-task',
+            headers: { 'Authorization': `bearer ${localStorage.getItem('ezPortal')}` },
+            data: {
+                id: this.id.split('-')[1]
+            }
+        }).then((result) => $(this).hide())
+    })
+    $('.editTask').click(function () {
+        toEdit = this.id.split('-')[1];
+        $('#modal-task-desc').val($(this).data('modalb'))
+        $('#modal-task-name').val($(this).data('modalt'))
+        if (document.querySelector('#update-btn').classList.length == 2) {
+            $('#update-btn').addClass('update')
+        }
+    })
+    $('#edit-task').submit((e) => {
+        e.preventDefault();
+        if (document.querySelector('#update-btn').classList.length == 3) {
+            $.ajax({
+                type: 'put',
+                url: '../api/update-pre-task',
+                headers: { 'Authorization': `bearer ${localStorage.getItem('ezPortal')}` },
+                data: {
+                    id: toEdit,
+                    title: $('#modal-task-name').val().trim(),
+                    body: $('#modal-task-desc').val().trim()
+                }
+            }).then((result) => location.reload())
+        }
+
+    })
+
     $('#add-task').submit((e) => {
         e.preventDefault();
         $.post({

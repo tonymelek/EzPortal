@@ -318,9 +318,38 @@ router.delete('/deleteuser/:id', verifyToken, async (req, res) => {
 });
 
 //Delete tasks
+router.delete('/delete-pre-task', verifyToken, async (req, res) => {
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    if (authData.user.Role.management_level > 1) { //Only IT Admin Can Delete Users
+      db.PreDef.destroy({ where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete task', err: err.message }));
+    }
+    else {
+      res.status(403).json({ msg: "Sorry, you can't delete a task, contact your admin" })
+    }
+  }
+  catch (err) {
+    throw err
+  }
+});
 
-//Generate Token
+//Update Tasks
+router.put('/update-pre-task', verifyToken, async (req, res) => {
+  try {
+    const authData = await jwtVerify(req.token, secret);
+    if (authData.user.Role.management_level > 1) { //Only IT Admin Can Delete Users
+      db.PreDef.update({ title: req.body.title, body: req.body.body }, { where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to update task', err: err.message }));
+    }
+    else {
+      res.status(403).json({ msg: "Sorry, you can't update a task, contact your admin" })
+    }
+  }
+  catch (err) {
+    throw err
+  }
+});
 
+//Check user Credentials and Generate Token
 router.post('/login', async (req, res) => {
   console.log('\n');
   let user;
