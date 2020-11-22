@@ -1,3 +1,4 @@
+//Handle Changing Password Check and Logic
 $('#change-pass').submit((e) => {
     e.preventDefault();
     if ($('#new1').val() === $('#new2').val()) {

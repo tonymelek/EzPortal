@@ -9,7 +9,7 @@ $('#login-form').submit(function (e) {
     }).then(function (result) {
         if (result.level == undefined) {
 
-            alertify.alert('Wrong email or password, Please,try again');
+            alertify.alert('Login Error', 'Wrong email or password, Please,try again');
             return
         }
         localStorage.setItem('ezPortal', result.token.token) //Store the token into local storage
