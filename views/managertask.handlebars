@@ -108,7 +108,11 @@
                             <textarea class="form-control" name="task-desc" id="task-desc"></textarea>
 
                         </div>
-                        <button class="btn btn-primary" type="submit">Add Task</button>
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <button class="btn btn-primary" type="submit">Add Task</button>
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#taskEdit">Edit/Delete
+                                Tasks</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -116,69 +120,63 @@
     </div>
 </div>
 </div>
-{{> footer}}
-<script>
-    localStorage.setItem("ezPortal", '{{token}}')
-    $('#add-task').submit((e) => {
-        e.preventDefault();
-        $.post({
-            url: `../api/create-pretask`,
-            headers: {
-                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
-            },
-            data: {
-                title: $('#task-name').val().trim(),
-                body: $('#task-desc').val().trim()
 
-            }
-        }).then(() => location.reload())
-    })
-    $('#assign-task').submit((e) => {
-        e.preventDefault();
-        $.post({
-            url: `../api/assign-task`,
-            headers: {
-                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
-            },
-            data: {
-                assignedto: $('#assign-to').val(),
-                preid: $('#pre-task').val()
+<div class="modal" tabindex="-1" role="dialog" id='taskEdit'>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit and Delete Tasks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-12">
+                        <div id='pre-tasks-list'>
+                            {{#each predefTasks}}
+                            <div class="d-flex justify-content-between my-2 p-2 item w-95 mx-auto"
+                                id='preTask-{{dataValues.id}}'>
+                                <div class="font-weight-bold">
+                                    {{dataValues.title}}
+                                </div>
+                                <div>
+                                    <a href="#" class="d-inline-block px-2 editTask" data-modalt='{{dataValues.title}}'
+                                        data-modalb='{{dataValues.body}}' id="edit-{{dataValues.id}}"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" class="d-inline-block px-2 text-danger deleteTask"
+                                        id=' delete-{{dataValues.id}}'><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-7">
+                        <div class="card mb-5">
+                            <div class="card-header">
+                                <h2 class="text-center">Pre-Defined Task</h2>
+                            </div>
+                            <div class="card-body">
+                                <form id="edit-task">
+                                    <div class="form-group">
+                                        <label for="task-name">Task Name</label>
+                                        <input class="form-control" type="text" name="task-name" id="modal-task-name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="task-desc">Task Description</label>
+                                        <textarea class="form-control" name="task-desc" id="modal-task-desc"></textarea>
 
-            }
-        }).then(() => location.reload())
-    })
-    $(document).on("click", ".approve", function (e) {
-        e.preventDefault();
-        const toComplete = this.id.split('-')[1]
-        $.ajax({
-            type: 'put',
-            url: `../api/approve-task`,
-            headers: {
-                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
-            },
-            data: {
-                task_id: toComplete
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="update-btn">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            }
-        }).then((result) => {
-            location.reload()
-        })
-    })
-    $(document).on("click", ".completed", function (e) {
-        e.preventDefault();
-        const toComplete = this.id.split('-')[1]
-        $.ajax({
-            type: 'put',
-            url: `../api/complete-task`,
-            headers: {
-                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
-            },
-            data: {
-                task_id: toComplete
+            </div>
 
-            }
-        }).then((result) => {
-            location.reload()
-        })
-    });
-</script>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/assets/js/managerTask.js"></script>

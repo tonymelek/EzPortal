@@ -1,16 +1,16 @@
 <div class="container-fluid p-0">
     {{!-- <div class="jumbotron h-100 p-0 mt-3 login-cont"> --}}
     <div class="login-cont d-flex flex-column justify-content-center">
-        <h1 class="text-center welcome m-0 display-1">Welcome Back</h1>
+        <h1 class="text-center welcome m-0 ">Welcome Back</h1>
     </div>
     <hr class="m-0">
     <div class="row justify-content-center">
-        <div class="card col-lg-6 col-md-8 col-11 m-0 mb-3 p-0">
-            <div class="card-body login-card p-3">
-                <form id='login-form'>
-                    <div class="form-group">
+        <div class=" card login-card col-lg-6 col-md-8 col-11 m-0 mt-2 mb-3">
+            <div class="card-body d-flex align-items-center">
+                <form id='login-form' class="w-100">
+                    <div class=" form-group">
                         <label for="email">Email Address</label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+                        <input type="text" class="form-control w-100" id="email" name="email" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -23,35 +23,6 @@
         </div>{{!-- card --}}
     </div>
 </div>
-<script>
-    $('#login-form').submit(function (e) {
-        e.preventDefault();
-        $.post({
-            url: 'api/login',
-            data: {
-                email: $('#email').val().trim(),
-                password: $('#password').val()
-            }
-        }).then(function (result) {
-            if (result.level == undefined) {
 
-                alertify.alert('Wrong email or password, Please,try again');
-                return
-            }
-            localStorage.setItem('ezPortal', result.token.token)
-            switch (result.level) {
-                case 100:
-                    location.href = (`/admin-home/${result.token.token}`)
-                    break;
-                case 2:
-                    location.href = (`/manager-home/${result.token.token}`)
-                    break;
-                case 1:
-                    location.href = (`/user-home/${result.token.token}`)
-                    break;
-                default:
-                    break;
-            }
-        })
-    })
-</script>
+<script type="text/javascript" src="/assets/js/indexLogin.js"></script>
+

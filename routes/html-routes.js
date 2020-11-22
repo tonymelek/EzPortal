@@ -1,3 +1,4 @@
+//Dependencies
 const express = require('express');
 const verifyToken = require('../middleware/verifyToken');
 const { jwtSign, jwtVerify, jwtRefresh } = require('./../middleware/jwt')
@@ -55,6 +56,23 @@ router.get('/admin-home/:token', async (req, res) => {
     const token = { token: xtoken }
     res.render('admin', { title: "EzPortal | Admin | Departments", admin: authData.user, dHome, dRole, userSum, token })
 })
+//Admin Profile
+router.get('/admin-prof/:token', async (req, res) => {
+
+    const [xtoken, authData] = await checkToken(req.params.token)
+    const token = { token: xtoken }
+    const tasks = await db.Task.findAll({
+        include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
+        where: {
+            assignedto: authData.user.id
+        }
+    });
+
+    res.render('adminprofile', { title: "EzPortal | Admin | Profile", admin: authData.user, tasks, token })
+})
+
+
+
 //Admin Departments
 router.get('/admin-dept/:token', async (req, res) => {
     const depts = await db.Dept.findAll()
@@ -63,7 +81,7 @@ router.get('/admin-dept/:token', async (req, res) => {
 })
 //Admin Roles
 router.get('/admin-role/:token', async (req, res) => {
-    const roles = await db.Role.findAll()
+    const roles = await db.Role.findAll({ order: [['DeptId'], ['management_level', 'DESC']] })
     const depts = await db.Dept.findAll()
     const [token, authData] = await checkToken(req.params.token)
     res.render('adminroles', { title: "EzPortal | Admin | Roles", admin: authData.user, roles, depts, token })
@@ -98,7 +116,7 @@ router.get('/manager-tasks/:token', async (req, res) => {
         include: [{ model: db.Role, where: { management_level: [1, 2], DeptId: authData.user.Role.DeptId } }]
     })
     const predefTasks = await db.PreDef.findAll()
-    // console.log(authData);
+
     const tasks = await db.Task.findAll({
         include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
         where: {
@@ -111,24 +129,16 @@ router.get('/manager-tasks/:token', async (req, res) => {
 //Employee-Home
 router.get('/user-home/:token', async (req, res) => {
 
-    const users = await db.User.findAll()
-    const roles = await db.Role.findAll()
-    const depts = await db.Dept.findAll()
-    const predefTasks = await db.PreDef.findAll()
-    const tasks = await db.Task.findAll()
-    const [token, authData] = await checkToken(req.params.token)
-    res.render('employee', { title: "EzPortal | Employee | Departments", employee: authData.user, roles, depts, users, predefTasks, tasks, token })
+    const [xtoken, authData] = await checkToken(req.params.token)
+    const token = { token: xtoken }
+    const tasks = await db.Task.findAll({
+        include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
+        where: {
+            assignedto: authData.user.id
+        }
+    });
 
-    //    const [xtoken, authData] = await checkToken(req.params.token)
-    //    const token = { token: xtoken }
-    //    const tasks = await db.Task.findAll({
-    //       include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
-    //       where: {
-    //          assignedto: authData.user.id
-    //       }
-    //   });
-
-    //   res.render('employee', { title: "EzPortal | Employee | Tasks", employee: authData.user, tasks, token })
+    res.render('employee', { title: "EzPortal | Employee | Tasks", employee: authData.user, tasks, token })
 
 })
 
@@ -147,6 +157,4 @@ const checkToken = async (token) => {
     }
     return [newToken, authData]
 }
-
-
 module.exports = router;
