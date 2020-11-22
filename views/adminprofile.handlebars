@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="/manager-home/{{token.token}}">
-            <h2>Manager | {{manager.first_name}}</h2>
+        <a class="navbar-brand" href="#">
+            <h2> Admin | {{admin.first_name}}</h2>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,8 +10,19 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/manager-tasks/{{token.token}}">Tasks</a>
+                    <a class="nav-link" href="/admin-prof/{{token.token}} active">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-dept/{{token.token}}">Departments</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/admin-role/{{token.token}}">Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-user/{{token.token}}">Employees</a>
+                </li>
             </ul>
+
         </div>
     </div>
 </nav>
@@ -27,7 +38,6 @@
                         {{#each tasks}}
                         {{#unless dataValues.approved}}
                         {{#if dataValues.completed}}
-
                         <div class="d-flex justify-content-between my-2 p-2 itemA w-95 mx-auto ">
                             <div class="font-weight-bold" id='task-{{dataValues.id}}'>
                                 {{dataValues.PreDef.dataValues.title}} ||
@@ -61,54 +71,6 @@
         <div class="col-md-7 col-12">
             <div class="card mb-5">
                 <div class="card-header">
-                    <h2 class="text-center">Employee Details</h2>
-                </div>
-                <div class="card-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="first_name">First Name</label>
-                            <input type="text" class="form-control" id="inputFirstName" value={{manager.first_name}}
-                                disabled>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="last_name">Last Name</label>
-
-                            <input type="text" class="form-control" id="inputLastName" value={{manager.last_name}}
-                                disabled>
-
-                        </div>
-                    </div>
-                    <div class=" form-group">
-                        <label for="email">Email Address</label>
-
-                        <input type="email" class="form-control" id="inputEmail" value={{manager.email}} disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="mobile">Mobile Number</label>
-                        <input type="tel" class="form-control" id="inputMobile" placeholder={{manager.mobile}} disabled>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="office_number">Office Number</label>
-                            <input type="text" class="form-control" id="inputOfficeNumber"
-                                value={{manager.office_number}} disabled>
-
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="role">Role</label>
-                            <select id="inputRole" class="form-control" disabled>
-
-                                <option value={{manager.RoleId}}>{{manager.Role.title}}</option>
-                            </select>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-            <div class="card my-5">
-                <div class="card-header">
                     <h3 class="text-center">Change password</h3>
                 </div>
                 <div class="card-body">
@@ -135,10 +97,29 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/assets/js/manager.js"></script>
 <script>
     localStorage.setItem("ezPortal", '{{token.token}}')
+
+    $(document).on("click", ".completed", function (e) {
+        e.preventDefault();
+        const toComplete = this.id.split('-')[1]
+        console.log(toComplete)
+        $.ajax({
+            type: 'put',
+            url: `../api/complete-task`,
+            headers: {
+                'Authorization': `bearer ${localStorage.getItem('ezPortal')}`
+            },
+            data: {
+                task_id: toComplete
+
+            }
+        }).then((result) => {
+            console.log(result)
+            location.reload()
+        })
+    })
+
+
 </script>
-
 {{>change-pass}}
-
