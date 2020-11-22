@@ -23,35 +23,6 @@
         </div>{{!-- card --}}
     </div>
 </div>
-<script>
-    $('#login-form').submit(function (e) {
-        e.preventDefault();
-        $.post({
-            url: 'api/login',
-            data: {
-                email: $('#email').val().trim(),
-                password: $('#password').val()
-            }
-        }).then(function (result) {
-            if (result.level == undefined) {
 
-                alertify.alert('Login Error', `Wrong email or password.Please,re-enter your e-mail and password then try again`);
-                return
-            }
-            localStorage.setItem('ezPortal', result.token.token)
-            switch (result.level) {
-                case 100:
-                    location.href = (`/admin-home/${result.token.token}`)
-                    break;
-                case 2:
-                    location.href = (`/manager-home/${result.token.token}`)
-                    break;
-                case 1:
-                    location.href = (`/user-home/${result.token.token}`)
-                    break;
-                default:
-                    break;
-            }
-        })
-    })
-</script>
+<script type="text/javascript" src="/assets/js/indexLogin.js"></script>
+
