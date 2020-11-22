@@ -1,3 +1,4 @@
+//Dependencies
 const express = require('express');
 const verifyToken = require('../middleware/verifyToken');
 const { jwtSign, jwtVerify, jwtRefresh } = require('./../middleware/jwt')
@@ -80,7 +81,7 @@ router.get('/admin-dept/:token', async (req, res) => {
 })
 //Admin Roles
 router.get('/admin-role/:token', async (req, res) => {
-    const roles = await db.Role.findAll()
+    const roles = await db.Role.findAll({ order: [['DeptId'], ['management_level', 'DESC']] })
     const depts = await db.Dept.findAll()
     const [token, authData] = await checkToken(req.params.token)
     res.render('adminroles', { title: "EzPortal | Admin | Roles", admin: authData.user, roles, depts, token })

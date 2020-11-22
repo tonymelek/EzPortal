@@ -1,5 +1,6 @@
 
 let toEdit;
+//Edit and Create new Role
 $('#new-role').submit((e) => {
     e.preventDefault();
     if (document.querySelector('#submit').classList.length > 2) {
@@ -33,6 +34,8 @@ $('#new-role').submit((e) => {
         }
     }).then(res => location.reload())
 })
+
+//Delete an existing Role
 $(document).on("click", ".delete", function (e) {
     e.preventDefault();
     const toDelete = this.id.split('-')[1]
@@ -48,6 +51,7 @@ $(document).on("click", ".delete", function (e) {
     }).then(() => location.reload())
 
 })
+//Update for m with Role details to be updated
 $(document).on("click", ".edit", function (e) {
     e.preventDefault();
     if (document.querySelector('#submit').classList.length == 2) {
@@ -59,8 +63,3 @@ $(document).on("click", ".edit", function (e) {
     $('#inputManagement').val(($(`#role-${toEdit}`).attr('data-level')))
     $('#inputDepartment').val(($(`#role-${toEdit}`).attr('data-dept')))
 });
-function refreshToken() {
-    $.get(`api/refreshtoken/${localStorage.getItem('ezPortal')}`).then(res => {
-        localStorage.setItem(`ezPortal`, res.token);
-    })
-}
