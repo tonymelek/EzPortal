@@ -11,23 +11,23 @@
 Ez-Portal is a HR management system, that uses a wide-range of technologies on both front-end (HTML,JS,CSS, Bootstrap, ChartJS) and back-end (MySQL,Sequelize, NodeJS, Express JS,Handlebars,Jason Web Tokens)
 ## Installation
 1. Make sure Node.js is installed
-	>  Node.js
-	>  MySQL Workbench
-	>  Postman
+	- Node.js
+	- MySQL Workbench
+	- Postman
 2. Clone this repository
 3. Run the following code at terminal to install package
-	>  npm install
+> npm install
 4. Create an .env file with the following content
-	> DB_USER=username      <--- your own MySQL username
-	> DB_PASS=password      <--- your own MySQL password
-	> JWT_SECRET=GroupXYZ
-	> PORT=8080         
+> DB_USER=username      <--- your own MySQL username
+> DB_PASS=password      <--- your own MySQL password
+> JWT_SECRET=GroupXYZ
+> PORT=8080         
 
 ## Usage
 1. Run the following code at MySQL workbench to create database
-	>  drop database if exists employee_demo_db;
-	>  create database employee_demo_db;
-	>  use employee_demo_db;
+> drop database if exists employee_demo_db;
+> create database employee_demo_db;
+> use employee_demo_db;
 2. Use Postman to create first department
 <img src="./assets/first-department.png" alt="create-first-department">
 
