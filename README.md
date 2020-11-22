@@ -74,7 +74,7 @@ Please, send any question to:
 1. Tony Melek [tonymelek.au@gmail.com](mailto:tonymelek.au@gmail.com)
 2. Christopher [Chris.skogstad1@gmail.com](mailto:Chris.skogstad1@gmail.com)
 3. Alan Chang [pichengchang@gmail.com](mailto:pichengchang@gmail.com)
-4. Daniel Zhang
+
 
 ## License
 The project is protected under MIT,you may need to read through license conditions
