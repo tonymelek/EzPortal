@@ -9,13 +9,13 @@
 * [Questions](#questions)
 ## Description
 Ez-Portal is a HR management system, that uses a wide-range of technologies on both front-end and back-end.
-Front-end:
+### Front-end:
    - HTML
    - JS
    - CSS
    - Bootstrap
-   - ChartJS)
-Back-end:
+   - ChartJS
+### Back-end:
    - MySQL
    - Sequelize
    - Node.JS
@@ -35,9 +35,9 @@ Back-end:
     > 
     > DB_PASS=password      <--- your own MySQL password
     > 
-    > JWT_SECRET=GroupXYZ
+    > JWT_SECRET=xxxx   <-- Token Secret of your choice
     > 
-    > PORT=8080         
+    > PORT=8080         <--- your local port
 
 ## Usage
 1. Run the following code at MySQL workbench to create database
