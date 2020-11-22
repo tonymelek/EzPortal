@@ -1,7 +1,7 @@
 
 let toEdit;
+//Handle Create and Update employee
 $('#new-user').submit((e) => {
-
     e.preventDefault();
     if (document.querySelector('#submit').classList.length > 2) {
         $.ajax({
@@ -39,6 +39,7 @@ $('#new-user').submit((e) => {
         }
     }).then(res => location.reload())
 })
+//Handle delet Employee
 $(document).on("click", ".delete", function (e) {
     e.preventDefault();
     const toDelete = this.id.split('-')[1]
@@ -54,6 +55,7 @@ $(document).on("click", ".delete", function (e) {
     }).then(() => location.reload())
 
 })
+//Set Form Values to the Employee details to be updated
 $(document).on("click", ".edit", function (e) {
     e.preventDefault();
     if (document.querySelector('#submit').classList.length == 2) {

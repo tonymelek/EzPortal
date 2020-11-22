@@ -1,7 +1,7 @@
 
 let toEdit;
+//Handles Update and Creating new Departments
 $('#new-dept').submit((e) => {
-
     e.preventDefault();
     if (document.querySelector('#submit').classList.length > 2) {
         $.ajax({
@@ -28,6 +28,8 @@ $('#new-dept').submit((e) => {
         }
     }).then(res => location.reload())
 })
+
+//Handle Delete Department
 $(document).on("click", ".delete", function (e) {
     e.preventDefault();
     const toDelete = this.id.split('-')[1]
@@ -43,6 +45,7 @@ $(document).on("click", ".delete", function (e) {
     }).then(() => location.reload())
 
 })
+//Display Existing Department Data in the form
 $(document).on("click", ".edit", function (e) {
     e.preventDefault();
     if (document.querySelector('#submit').classList.length == 2) {

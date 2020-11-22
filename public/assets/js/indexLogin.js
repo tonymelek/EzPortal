@@ -12,7 +12,8 @@ $('#login-form').submit(function (e) {
             alertify.alert('Wrong email or password, Please,try again');
             return
         }
-        localStorage.setItem('ezPortal', result.token.token)
+        localStorage.setItem('ezPortal', result.token.token) //Store the token into local storage
+        //Redirect depending on management level
         switch (result.level) {
             case 100:
                 location.href = (`/admin-home/${result.token.token}`)

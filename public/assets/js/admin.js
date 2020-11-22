@@ -1,5 +1,6 @@
 
 window.onload = function () {
+    //Initiate Variables for the charts
     const depts = document.querySelectorAll('.dept');
     const roles = document.querySelectorAll('.roler');
     const users = document.querySelectorAll('.user');
@@ -7,6 +8,7 @@ window.onload = function () {
     const datapoints2 = []
     const datapoints3 = []
     let i = 0;
+    //Build the datapoint object for the 3 charts
     for (item of depts) {
         i += 10
         datapoints.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
@@ -21,7 +23,7 @@ window.onload = function () {
         i += 10
         datapoints3.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
     }
-
+    //Draw the charts
     var chart1 = new CanvasJS.Chart("chartContainer1", {
         animationEnabled: true,
         exportEnabled: true,

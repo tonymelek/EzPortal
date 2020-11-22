@@ -1,4 +1,4 @@
-//Hadle Task Completion
+//Handle Complete Task
 $(document).on("click", ".completed", function (e) {
     e.preventDefault();
     const toComplete = this.id.split('-')[1]
@@ -18,4 +18,3 @@ $(document).on("click", ".completed", function (e) {
         location.reload()
     })
 })
-
