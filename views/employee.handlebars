@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="/user-home/{{token.token}}">
+        <a class="navbar-brand" href="/user-home/{{jwtToken.token}}">
             <h2>Employee | {{employee.first_name}}</h2>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
@@ -133,5 +133,5 @@
 
 
 <script type="text/javascript" src="/assets/js/employee.js"></script>
-<script>localStorage.setItem("ezPortal", '{{token.token}}')</script>
+<script>localStorage.setItem("ezPortal", '{{jwtToken.token}}')</script>
 <script src="/assets/js/changepass.js"></script>

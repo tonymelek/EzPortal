@@ -11,7 +11,7 @@ function roleFn(sequelize, DataTypes) {
       },
     },
     hourly_rate: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: false,
       validate: {
         min: {

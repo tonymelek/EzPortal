@@ -4,25 +4,22 @@ window.onload = function () {
     const depts = document.querySelectorAll('.dept');
     const roles = document.querySelectorAll('.roler');
     const users = document.querySelectorAll('.user');
-    const datapoints = []
-    const datapoints2 = []
-    const datapoints3 = []
-    let i = 0;
+
     //Build the datapoint object for the 3 charts
-    for (item of depts) {
-        i += 10
-        datapoints.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
+    function dataPoints(items) {
+        let i = 0;
+        let datapoints = [];
+        for (item of items) {
+            i += 10
+            datapoints.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
+        }
+        return datapoints;
     }
-    i = 0
-    for (item of roles) {
-        i += 10
-        datapoints2.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
-    }
-    i = 0
-    for (item of users) {
-        i += 10
-        datapoints3.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
-    }
+    const datapoints = dataPoints(depts);
+    const datapoints2 = dataPoints(roles)
+    const datapoints3 = dataPoints(users);
+
+
     //Draw the charts
     var chart1 = new CanvasJS.Chart("chartContainer1", {
         animationEnabled: true,
@@ -88,3 +85,4 @@ window.onload = function () {
     chart3.render();
 
 }
+$('.logout').removeClass('d-none');

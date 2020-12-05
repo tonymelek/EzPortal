@@ -1,21 +1,12 @@
 const bcrypt = require('bcrypt');
 const bcrypter = {
     // Promisify bcrypt.comp
-    bcryptComp: function (plain, hash) {
-        return new Promise((res, rej) => {
-            bcrypt.compare(plain, hash, (err, result) => {
-                result ? res(true) : res(false);
-            });
-        });
+    bcryptComp: async function (plain, hash) {
+        return await bcrypt.compare(plain, hash)
     },
     // Promisify bcrypt.hash
-    bcryptHash: function (plain) {
-        return new Promise((res, rej) => {
-            bcrypt.hash(plain, 10, (err, hash) => {
-                hash ? res(hash) : res(err);
-            });
-        });
+    bcryptHash: async function (plain) {
+        return await bcrypt.hash(plain, 10)
     }
-
 }
 module.exports = bcrypter

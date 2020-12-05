@@ -1,24 +1,19 @@
 * { 
     box-sizing: border-box; 
-} 
- 
+}  
 html { 
-    width: 100%; 
     min-height: 100%; 
 } 
- 
 body { 
-    width: inherit; 
+    max-width: 100%;
     min-height: inherit; 
     margin: 0; 
     padding: 0; 
     background-color:#98a3ad;
 } 
-
 .welcome{
-font-size: 10vh;
-color:#E2EBF3;
-
+    font-size: 10vh;
+    color:#E2EBF3;
 }
 .logo{
     color:#E22028;
@@ -43,16 +38,14 @@ color:#E2EBF3;
     background-color: #2A4455;
     min-height:40vh;
 }
-
 header{
     background-color:#2A4455;
 }
 footer {
-    height: 60px;
+    /* height: 60px; */
     background-color:#2A4455;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    padding: 5px 0;
+    /* width: 100%; */
 }
 .w-95{
     width:95%;
@@ -60,11 +53,10 @@ footer {
 .h-90{
     max-height:70vh;
 }
-
 .item{
     border:1px solid  #666655;
-  border-radius: 5px;
-  background-color: #f2f3cb;
+    border-radius: 5px;
+    background-color: #f2f3cb;
 }
 .itemA{
     border: 1px solid #516151;

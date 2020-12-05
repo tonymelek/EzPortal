@@ -10,7 +10,7 @@ const verifyToken = async (req, res, next) => {
   const bearer = bearerHeader.split(' ');
   const token = bearer[1];
   let newToken = token;
-
+  let authData;
   try {
     authData = await jwtVerify(token, secret);
 
@@ -24,6 +24,7 @@ const verifyToken = async (req, res, next) => {
     }
   }
   req.token = token;
+  req.authData = authData;
   next();
 };
 module.exports = verifyToken;

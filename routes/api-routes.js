@@ -8,7 +8,7 @@ const axios = require('axios')
 const verifyToken = require('../middleware/verifyToken');
 const router = express.Router();
 const secret = process.env.JWT_SECRET;
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000
 
 //Create First Department without Token
 router.post('/create-first-dept', async (req, res) => {
@@ -24,7 +24,7 @@ router.post('/create-first-dept', async (req, res) => {
 //Create Department
 router.post('/createdept', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Create New Departments
       db.Dept.create({ name: req.body.name }).then((data) => {
         res.status(200).json(data)
@@ -60,7 +60,7 @@ router.post('/create-first-role', async (req, res) => {
 //Create Role
 router.post('/createrole', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     //Only IT Admin Can Create New Roles and managers of same department
     if ((authData.user.Role.management_level === 100) || (authData.user.Role.management_level > req.body.level && authData.user.Role.DeptId == req.body.deptid)) {
       db.Role.create({
@@ -101,7 +101,7 @@ router.post('/create-admin', async (req, res) => {
 
 //Create new Employee
 router.post('/createuser', verifyToken, async (req, res) => {
-  const authData = await jwtVerify(req.token, secret);
+  const authData = req.authData
   // Give the new user a default password of 123456789 and hash it before adding into the database
   if (authData.user.Role.management_level === 100) {
     const hash = await bcryptHash('123456789')
@@ -123,7 +123,7 @@ router.post('/createuser', verifyToken, async (req, res) => {
 //Create new pre-defined tasks
 router.post('/create-pretask', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     //Only IT Admin and Managers Can Create New Tasks
     if (authData.user.Role.management_level > 1) {
       db.PreDef.create({
@@ -143,7 +143,7 @@ router.post('/create-pretask', verifyToken, async (req, res) => {
 //Assign a task
 router.post('/assign-task', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     const data = await db.Task.create({
       assignedto: req.body.assignedto,
       assignedby: authData.user.id,
@@ -160,7 +160,7 @@ router.post('/assign-task', verifyToken, async (req, res) => {
 router.put('/changepass', verifyToken, async (req, res) => {
 
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     const hash = await bcryptHash(req.body.password)
     if (await bcryptComp(req.body.old_pass, authData.user.password)) {
       await db.User.update({ password: hash }, { where: { id: authData.user.id } })
@@ -177,7 +177,7 @@ router.put('/changepass', verifyToken, async (req, res) => {
 //Complete a task
 router.put('/complete-task', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     await db.Task.update({ completed: true }, { where: { id: req.body.task_id } })
     res.status(200).json({ msg: 'task marked as completed' })
   }
@@ -190,7 +190,7 @@ router.put('/complete-task', verifyToken, async (req, res) => {
 //Approve a task
 router.put('/approve-task', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     await db.Task.update({ approved: true }, { where: { id: req.body.task_id } })
     res.status(200).json({ msg: 'task marked as completed' })
   }
@@ -203,7 +203,7 @@ router.put('/approve-task', verifyToken, async (req, res) => {
 //Update department
 router.put('/updatedept', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Update Departments
       db.Dept.update({ name: req.body.name }, { where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to update a department', err: err.message }));
     }
@@ -219,7 +219,7 @@ router.put('/updatedept', verifyToken, async (req, res) => {
 //Update role
 router.put('/updaterole', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     //Only IT Admin Can Update Roles and managers of same department
     if ((authData.user.Role.management_level === 100) || (authData.user.Role.management_level > req.body.level && authData.user.Role.DeptId == req.body.deptid)) {
       db.Role.update({
@@ -245,7 +245,7 @@ router.put('/updaterole', verifyToken, async (req, res) => {
 
 //update employee
 router.put('/updateuser', verifyToken, async (req, res) => {
-  const authData = await jwtVerify(req.token, secret);
+  const authData = req.authData
   // Give the user a default password of 123456789 and hash it before adding into the database
   if (authData.user.Role.management_level === 100) {
     const hash = await bcryptHash('123456789')
@@ -272,7 +272,7 @@ router.put('/updateuser', verifyToken, async (req, res) => {
 //Delete department
 router.delete('/deletedept', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Departments
       db.Dept.destroy({ where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete department', err: err.message }));
     }
@@ -288,7 +288,7 @@ router.delete('/deletedept', verifyToken, async (req, res) => {
 //Delete role
 router.delete('/deleterole', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Roles
       db.Role.destroy({ where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete role', err: err.message }));
     }
@@ -304,7 +304,7 @@ router.delete('/deleterole', verifyToken, async (req, res) => {
 //Delete employee
 router.delete('/deleteuser/:id', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     if (authData.user.Role.management_level === 100) { //Only IT Admin Can Delete Users
       db.User.destroy({ where: { id: req.params.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete user', err: err.message }));
     }
@@ -320,7 +320,7 @@ router.delete('/deleteuser/:id', verifyToken, async (req, res) => {
 //Delete tasks
 router.delete('/delete-pre-task', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     if (authData.user.Role.management_level > 1) { //Only IT Admin Can Delete Users
       db.PreDef.destroy({ where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to delete task', err: err.message }));
     }
@@ -336,7 +336,7 @@ router.delete('/delete-pre-task', verifyToken, async (req, res) => {
 //Update Tasks
 router.put('/update-pre-task', verifyToken, async (req, res) => {
   try {
-    const authData = await jwtVerify(req.token, secret);
+    const authData = req.authData
     if (authData.user.Role.management_level > 1) { //Only IT Admin Can Delete Users
       db.PreDef.update({ title: req.body.title, body: req.body.body }, { where: { id: req.body.id } }).then((data) => res.status(200).json(data)).catch((err) => res.status(403).json({ msg: 'Failed to update task', err: err.message }));
     }

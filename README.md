@@ -29,19 +29,10 @@ Ez-Portal is a HR management system, that uses a wide-range of technologies on b
 > drop database if exists employee_demo_db;
 > create database employee_demo_db;
 > use employee_demo_db;
-2. Use Postman to create first department
-<img src="./assets/first-department.png" alt="create-first-department">
-
-3. Use Postman to create first role
-<img src="./assets/first-role.png" alt="create-frist-role">
-
-4. Use Postman to create first admin account.
-<img src="./assets/admin-account.png" alt="create-admin">
-
-5. Run the following code to start the app
-	>  node server.js
-6. Type the following address on your browser to start using the app
-	>  http://localhost:8080/
+2. Navigate to the project root and open the terminal and type
+> `npm run start`
+3. Type the following address on your browser URL to start using the app
+	>  http://localhost:5000/
 
 ## Demo
 Click on the pic to see the demo video
@@ -55,7 +46,7 @@ Please submit a **Pull request** if you would like to contribute to the project
 You are welcome to provide any feedback and/or ask questions.
 Please, send any question to:
 1. Tony Melek [tonymelek.au@gmail.com](mailto:tonymelek.au@gmail.com)
-2. Christopher []
+2. Christopher Skogstad [Chris.skogstad1@gmail.com](mailto:Chris.skogstad1@gmail.com)
 3. Alan Chang [pichengchang@gmail.com](mailto:pichengchang@gmail.com)
 
 

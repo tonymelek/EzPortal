@@ -19,3 +19,4 @@ $(document).on("click", ".completed", function (e) {
     })
 })
 
+$('.logout').removeClass('d-none');

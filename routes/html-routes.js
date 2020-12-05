@@ -52,15 +52,16 @@ router.get('/admin-home/:token', async (req, res) => {
         }
     }
 
-    const [xtoken, authData] = await checkToken(req.params.token)
-    const token = { token: xtoken }
-    res.render('admin', { title: "EzPortal | Admin | Departments", admin: authData.user, dHome, dRole, userSum, token })
+    const [token, authData] = await checkToken(req.params.token)
+    const jwtToken = { token }
+    console.log(jwtToken);
+    res.render('admin', { title: "EzPortal | Admin | Departments", admin: authData.user, dHome, dRole, userSum, jwtToken })
 })
 //Admin Profile
 router.get('/admin-prof/:token', async (req, res) => {
 
-    const [xtoken, authData] = await checkToken(req.params.token)
-    const token = { token: xtoken }
+    const [token, authData] = await checkToken(req.params.token)
+    const jwtToken = { token }
     const tasks = await db.Task.findAll({
         include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
         where: {
@@ -68,7 +69,7 @@ router.get('/admin-prof/:token', async (req, res) => {
         }
     });
 
-    res.render('adminprofile', { title: "EzPortal | Admin | Profile", admin: authData.user, tasks, token })
+    res.render('adminprofile', { title: "EzPortal | Admin | Profile", admin: authData.user, tasks, jwtToken })
 })
 
 
@@ -98,15 +99,15 @@ router.get('/admin-user/:token', async (req, res) => {
 
 //Manager-Home
 router.get('/manager-home/:token', async (req, res) => {
-    const [xtoken, authData] = await checkToken(req.params.token)
-    const token = { token: xtoken }
+    const [token, authData] = await checkToken(req.params.token)
+    const jwtToken = { token }
     const tasks = await db.Task.findAll({
         include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
         where: {
             assignedto: authData.user.id
         }
     });
-    res.render('manager', { title: "EzPortal | Manager | Departments", manager: authData.user, tasks, token })
+    res.render('manager', { title: "EzPortal | Manager | Departments", manager: authData.user, tasks, jwtToken })
 })
 
 //Manager-Task
@@ -129,8 +130,8 @@ router.get('/manager-tasks/:token', async (req, res) => {
 //Employee-Home
 router.get('/user-home/:token', async (req, res) => {
 
-    const [xtoken, authData] = await checkToken(req.params.token)
-    const token = { token: xtoken }
+    const [token, authData] = await checkToken(req.params.token)
+    const jwtToken = { token }
     const tasks = await db.Task.findAll({
         include: [{ model: db.User, as: "assigned_by", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.User, as: "assigned_to", attributes: ['first_name', 'last_name', 'RoleId'] }, { model: db.PreDef }],
         where: {
@@ -138,7 +139,7 @@ router.get('/user-home/:token', async (req, res) => {
         }
     });
 
-    res.render('employee', { title: "EzPortal | Employee | Tasks", employee: authData.user, tasks, token })
+    res.render('employee', { title: "EzPortal | Employee | Tasks", employee: authData.user, tasks, jwtToken })
 
 })
 

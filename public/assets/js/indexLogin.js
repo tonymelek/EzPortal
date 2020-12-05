@@ -29,3 +29,5 @@ $('#login-form').submit(function (e) {
         }
     })
 })
+
+$('.logout').addClass('d-none');
