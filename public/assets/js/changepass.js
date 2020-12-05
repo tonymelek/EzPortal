@@ -14,7 +14,7 @@ $('#change-pass').submit((e) => {
 
             }
         }).then((result) => {
-            console.log(result)
+
             if (result.msg == "failed to update, wrong old password") {
                 alertify.alert('Password Change Error', 'Wrong Old Password!');
             } else {

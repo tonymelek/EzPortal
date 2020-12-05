@@ -351,7 +351,7 @@ router.put('/update-pre-task', verifyToken, async (req, res) => {
 
 //Check user Credentials and Generate Token
 router.post('/login', async (req, res) => {
-  console.log('\n');
+
   let user;
   try {
     user = await db.User.findOne({

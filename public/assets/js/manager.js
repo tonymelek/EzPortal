@@ -2,7 +2,7 @@
 $(document).on("click", ".completed", function (e) {
     e.preventDefault();
     const toComplete = this.id.split('-')[1]
-    console.log(toComplete)
+
     $.ajax({
         type: 'put',
         url: `../api/complete-task`,
@@ -14,7 +14,7 @@ $(document).on("click", ".completed", function (e) {
 
         }
     }).then((result) => {
-        console.log(result)
+
         location.reload()
     })
 })

@@ -54,7 +54,7 @@ router.get('/admin-home/:token', async (req, res) => {
 
     const [token, authData] = await checkToken(req.params.token)
     const jwtToken = { token }
-    console.log(jwtToken);
+
     res.render('admin', { title: "EzPortal | Admin | Departments", admin: authData.user, dHome, dRole, userSum, jwtToken })
 })
 //Admin Profile
