@@ -23,7 +23,14 @@ function userFn(sequelize, DataTypes) {
     mobile: {
       type: DataTypes.STRING,
       allowNull: false,
-
+      validate: {
+        validatePhone: function (value) {
+          value = "0" + value
+          if (!/^0(4)\d{8}$/.test(value)) {
+            throw new Error('phone format error!')
+          }
+        }
+      }
       // validate: {
       //   len: {
       //     args: [10, 10],
