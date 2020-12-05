@@ -31,12 +31,6 @@ function userFn(sequelize, DataTypes) {
           }
         }
       }
-      // validate: {
-      //   len: {
-      //     args: [10, 10],
-      //     msg: "The mobile number should be exactly 10 characters",
-      //   },
-      // },
 
     },
     office_number: {
@@ -81,10 +75,6 @@ function userFn(sequelize, DataTypes) {
   };
 
 
-  // Associate Employees to Time Sheets
-  // User.associate = (models) => {
-  //     User.hasMany(models.TSheet)
-  // }
   return User;
 }
 

@@ -10,7 +10,10 @@ body {
     margin: 0; 
     padding: 0; 
     background-color:#98a3ad;
-} 
+}
+a{
+    text-decoration: none;
+}
 .welcome{
     font-size: 10vh;
     color:#E2EBF3;
