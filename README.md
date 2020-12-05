@@ -8,52 +8,35 @@
 * [Tests](#tests)
 * [Questions](#questions)
 ## Description
-Ez-Portal is a HR management system, that uses a wide-range of technologies on both front-end and back-end.
-### Front-end:
-   - HTML
-   - JS
-   - CSS
-   - Bootstrap
-   - ChartJS
-### Back-end:
-   - MySQL
-   - Sequelize
-   - Node.JS
-   - Express JS
-   - Handlebars
-   - Jason Web Tokens
+Ez-Portal is a HR management system, that uses a wide-range of technologies on both front-end (HTML,JS,CSS, Bootstrap, ChartJS) and back-end (MySQL,Sequelize, NodeJS, Express JS,Handlebars,JSON Web Tokens)
 ## Installation
-1. Make sure Node.js is installed
-	- Node.js
-	- MySQL Workbench
-	- Postman
+1. Software required
+ * Install Node.js
+ * Install MySQL and MySQL Workbench
 2. Clone this repository
 3. Run the following code at terminal to install package
-    > npm install
+> `npm install`
 4. Create an .env file with the following content
-    > DB_USER=username      <--- your own MySQL username
-    > 
-    > DB_PASS=password      <--- your own MySQL password
-    > 
-    > JWT_SECRET=xxxx   <-- Token Secret of your choice
-    > 
-    > PORT=8080         <--- your local port
+> DB_USER=username      <--- your own MySQL username
+> DB_PASS=password      <--- your own MySQL password
+> JWT_SECRET=GroupXYZ
+5. Go to `seed.js`, modify the initialisation variables as per your liking to create the first admin account
+6. Run the following code at terminal
+> `npm run seed`
 
 ## Usage
 1. Run the following code at MySQL workbench to create database
-    > drop database if exists employee_demo_db;
-    > 
-    > create database employee_demo_db;
-    > 
-    > use employee_demo_db;
+> drop database if exists employee_demo_db;
+> create database employee_demo_db;
+> use employee_demo_db;
 2. Use Postman to create first department
-    <img src="./assets/first-department.png" alt="create-first-department">
+<img src="./assets/first-department.png" alt="create-first-department">
 
 3. Use Postman to create first role
-    <img src="./assets/first-role.png" alt="create-frist-role">
+<img src="./assets/first-role.png" alt="create-frist-role">
 
 4. Use Postman to create first admin account.
-    <img src="./assets/admin-account.png" alt="create-admin">
+<img src="./assets/admin-account.png" alt="create-admin">
 
 5. Run the following code to start the app
 	>  node server.js
@@ -72,7 +55,7 @@ Please submit a **Pull request** if you would like to contribute to the project
 You are welcome to provide any feedback and/or ask questions.
 Please, send any question to:
 1. Tony Melek [tonymelek.au@gmail.com](mailto:tonymelek.au@gmail.com)
-2. Christopher [Chris.skogstad1@gmail.com](mailto:Chris.skogstad1@gmail.com)
+2. Christopher []
 3. Alan Chang [pichengchang@gmail.com](mailto:pichengchang@gmail.com)
 
 
