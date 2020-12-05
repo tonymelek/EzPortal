@@ -40,7 +40,7 @@
                 <div class="card-body d-flex flex-column justify-content-between">
 
                     <h5 class="text-center">Roles per Department</h5>
-                    {{#each dHome}}
+                    {{#each rolesPerDept}}
                     <div class=" d-flex dept" data-name='{{this.dataValues.DeptName}}'
                         data-title={{this.dataValues.titles}}>
                         {{!-- {{this.dataValues.DeptName}} {{this.dataValues.titles}} --}}
@@ -60,7 +60,7 @@
                 </div>
                 <div class="card-body d-flex flex-column justify-content-between">
                     <h5 class="text-center">Employees per Role</h5>
-                    {{#each dRole}}
+                    {{#each usersPerRole}}
                     <div class=" d-flex roler" data-name='{{dataValues.roleT}}' data-title={{dataValues.employees}}>
 
                     </div>

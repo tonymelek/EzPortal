@@ -14,29 +14,29 @@ router.get('/', (req, res) => {
 })
 //Admin-Home
 router.get('/admin-home/:token', async (req, res) => {
-    const dHome = await db.Role.findAll({
+    const rolesPerDept = await db.Role.findAll({
         include: [{ model: db.Dept, attributes: ['name'] }],
         group: ['DeptId'],
         attributes: ['DeptId', [db.sequelize.fn('COUNT', 'title'), 'titles']]
     });
-    for (item of dHome) {
+    for (let item of rolesPerDept) {
         item.dataValues.DeptName = item.dataValues.Dept.name
     }
-    const dRole = await db.User.findAll({
+    const usersPerRole = await db.User.findAll({
         include: [{ model: db.Role, attributes: ['title'] }],
         group: ['RoleId'],
         attributes: ['RoleId', [db.sequelize.fn('COUNT', 'first_name'), 'employees']],
     })
-    for (item of dRole) {
+    for (let item of usersPerRole) {
         item.dataValues.roleT = item.dataValues.Role.title
     }
-    const dUser = await db.User.findAll({
+    const usersPerLevel = await db.User.findAll({
         include: [{ model: db.Role, attributes: ['title', 'management_level'] }],
         group: ['management_level'],
         attributes: [[db.sequelize.fn('COUNT', 'first_name'), 'employees']],
     })
     const userSum = []
-    for (item of dUser) {
+    for (let item of usersPerLevel) {
         switch (item.dataValues.Role.management_level) {
             case 100:
                 userSum.push({ level: 'Admin', num: item.dataValues.employees })
@@ -55,7 +55,7 @@ router.get('/admin-home/:token', async (req, res) => {
     const [token, authData] = await checkToken(req.params.token)
     const jwtToken = { token }
 
-    res.render('admin', { title: "EzPortal | Admin | Departments", admin: authData.user, dHome, dRole, userSum, jwtToken })
+    res.render('admin', { title: "EzPortal | Admin | Departments", admin: authData.user, rolesPerDept, usersPerRole, userSum, jwtToken })
 })
 //Admin Profile
 router.get('/admin-prof/:token', async (req, res) => {

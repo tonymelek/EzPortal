@@ -9,7 +9,7 @@ window.onload = function () {
     function dataPoints(items) {
         let i = 0;
         let datapoints = [];
-        for (item of items) {
+        for (let item of items) {
             i += 10
             datapoints.push({ x: i, y: parseInt(item.getAttribute('data-title')), indexLabel: `${item.getAttribute('data-name')} (${item.getAttribute('data-title')})` })
         }
