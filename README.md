@@ -34,8 +34,6 @@ Ez-Portal is a HR management system, that uses a wide-range of technologies on b
 3. Type the following address on your browser URL to start using the app
 >  http://localhost:5000/
 
-## Demo
-Click on the pic to see the demo video
 
 ## Contributing
 Please submit a **Pull request** if you would like to contribute to the project
