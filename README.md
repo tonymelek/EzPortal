@@ -39,7 +39,13 @@ Ez-Portal is a HR management system, that uses a wide-range of technologies on b
 Please submit a **Pull request** if you would like to contribute to the project
 
 ## Tests
-
+You can use the deployed version [Ez Portal](https://ez-portal.herokuapp.com/)
+Use the test admin account credentials `tony@abc.com` , `123456789`
+Try creating new Department, Position, Employee.
+Use a Manager level Account to create and assign tasks and as an employee level mark task as completed and as a manager approve the completed tasks.
+![Admin](main_screeshot.JPG)
+![Employees](employees.JPG)
+![Tasks](tasks.jpg)
 ## Questions
 You are welcome to provide any feedback and/or ask questions.
 Please, send any question to:
